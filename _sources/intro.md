@@ -4,7 +4,7 @@ This is a small sample book to give you a feel for how book content is
 structured.
 
 :::{note}
-Here is a note! A Very good one!
+Here is a note! A Very good one! Huhuuuu
 :::
 
 And here is a code block:
