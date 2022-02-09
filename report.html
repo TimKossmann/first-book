@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Powerpoint &#8212; First Book</title>
+    <title>Reports &#8212; First Book</title>
     
   <link href="_static/css/theme.css" rel="stylesheet" />
   <link href="_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
@@ -105,7 +105,7 @@
  </li>
  <li class="toctree-l1 current active">
   <a class="current reference internal" href="#">
-   Powerpoint
+   Reports
   </a>
  </li>
 </ul>
@@ -196,9 +196,28 @@
             <nav id="bd-toc-nav" aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#technisches-vorgehen">
-   Technisches Vorgehen
+  <a class="reference internal nav-link" href="#powerpoint">
+   Powerpoint
   </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#technisches-vorgehen">
+     Technisches Vorgehen
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#erste-schritte">
+       Erste Schritte
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#layout">
+       Layout
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
  </li>
 </ul>
 
@@ -211,12 +230,16 @@
         
               <div>
                 
-  <div class="section" id="powerpoint">
-<h1>Powerpoint<a class="headerlink" href="#powerpoint" title="Permalink to this headline">¶</a></h1>
+  <div class="tex2jax_ignore mathjax_ignore section" id="reports">
+<h1>Reports<a class="headerlink" href="#reports" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="powerpoint">
+<h2>Powerpoint<a class="headerlink" href="#powerpoint" title="Permalink to this headline">¶</a></h2>
 <p>Es ist ebenfalls möglich die Diagramme und Informationen als Powerpoint zu exportieren. Das Ziel der Powerpoint ist es dem Nutzer eine Möglichkeit zu bieten, die Diagramme besser zu interpretieren. Gegebenenfalls kann die Präsentation auch von Zuhörern genutzt werden um andere für Themen der Cyber Sicherheit zu sensibilisieren.</p>
 <div class="section" id="technisches-vorgehen">
-<h2>Technisches Vorgehen<a class="headerlink" href="#technisches-vorgehen" title="Permalink to this headline">¶</a></h2>
+<h3>Technisches Vorgehen<a class="headerlink" href="#technisches-vorgehen" title="Permalink to this headline">¶</a></h3>
 <p>Um mit Python Powerpoint Datein zu erstellen oder zu bearbeiten haben wir uns für die Bibliothek python-pptx verwendet. Diese Bibliothek scheint ziemlich verbreitet zu sein und wird häufig als Lösung im Internet präsentiert.</p>
+<div class="section" id="erste-schritte">
+<h4>Erste Schritte<a class="headerlink" href="#erste-schritte" title="Permalink to this headline">¶</a></h4>
 <p>Die ersten Schritte um eine Powerpoint zu erstellen und zu speichern sind sehr einfach. Auch das Layout aus unserer Hauptpräsentation (von der Firma LaCTiS) zu übernehmen ging recht einfach, da es die Möglichkeit Templates zu laden und zu bearbeiten.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pp</span> <span class="o">=</span> <span class="n">Presentation</span><span class="p">(</span><span class="s2">&quot;Template.pptx&quot;</span><span class="p">)</span>
 
@@ -226,7 +249,13 @@
 
 </pre></div>
 </div>
+</div>
+<div class="section" id="layout">
+<h4>Layout<a class="headerlink" href="#layout" title="Permalink to this headline">¶</a></h4>
 <p>Die erste Herausforderung, die sich uns stellte, war das Layouten der einzelnen Folien. Unsere Diagramme hatten alle unterschiedliche Formate. So waren die Diagramme der Kosten eher im Querformat und die Diagramme aus Phishing hatten eher ein Hochformat.</p>
+<p>Nachdem wir uns überlegt hatten, wie die einzelnen Folien ungefähr aussehen sollten ging es darum diese auch so mit python umzusetzen. Dazu hatten wir verschiedene Möglichkeiten. Zunächst haben wir versucht die Diagramme und Texte auf einer blanken Vorlagenfolie zu platzieren. Das stellte sich jedoch als sehr schwierig heraus, da man die Positionen auf der Folie mit Abständen zum Rand definiert. Für uns war es dann jedoch nicht möglich zu berechnen, wo der Text auf die Folie geschrieben werden sollte, denn wir hatten den Abstand zum Rand aber nicht die größe des Diagramms. Somit wurde es eher zu einem Try-and-Error-Spiel die Texte richtig zu platzieren, das jedes mal von neuem losging, wenn Texte oder Diagramme angepasst wurden</p>
+</div>
+</div>
 </div>
 </div>
 
