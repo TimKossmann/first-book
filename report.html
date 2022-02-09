@@ -215,6 +215,16 @@
        Layout
       </a>
      </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#texte-einfugen">
+       Texte einfügen
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#diagramme-einfugen">
+       Diagramme einfügen
+      </a>
+     </li>
     </ul>
    </li>
   </ul>
@@ -253,7 +263,36 @@
 <div class="section" id="layout">
 <h4>Layout<a class="headerlink" href="#layout" title="Permalink to this headline">¶</a></h4>
 <p>Die erste Herausforderung, die sich uns stellte, war das Layouten der einzelnen Folien. Unsere Diagramme hatten alle unterschiedliche Formate. So waren die Diagramme der Kosten eher im Querformat und die Diagramme aus Phishing hatten eher ein Hochformat.</p>
-<p>Nachdem wir uns überlegt hatten, wie die einzelnen Folien ungefähr aussehen sollten ging es darum diese auch so mit python umzusetzen. Dazu hatten wir verschiedene Möglichkeiten. Zunächst haben wir versucht die Diagramme und Texte auf einer blanken Vorlagenfolie zu platzieren. Das stellte sich jedoch als sehr schwierig heraus, da man die Positionen auf der Folie mit Abständen zum Rand definiert. Für uns war es dann jedoch nicht möglich zu berechnen, wo der Text auf die Folie geschrieben werden sollte, denn wir hatten den Abstand zum Rand aber nicht die größe des Diagramms. Somit wurde es eher zu einem Try-and-Error-Spiel die Texte richtig zu platzieren, das jedes mal von neuem losging, wenn Texte oder Diagramme angepasst wurden</p>
+<p>Nachdem wir uns überlegt hatten, wie die einzelnen Folien ungefähr aussehen sollten ging es darum diese auch so mit python umzusetzen. Dazu hatten wir verschiedene Möglichkeiten. Zunächst haben wir versucht die Diagramme und Texte auf einer blanken Vorlagenfolie zu platzieren. Das stellte sich jedoch als sehr schwierig heraus, da man die Positionen auf der Folie mit Abständen zum Rand definiert. Für uns war es dann jedoch nicht möglich zu berechnen, wo der Text auf die Folie geschrieben werden sollte, denn wir hatten den Abstand zum Rand aber nicht die größe des Diagramms. Somit wurde es eher zu einem Try-and-Error-Spiel die Texte richtig zu platzieren, das jedes mal von neuem losging, wenn Texte oder Diagramme angepasst wurden. <strong>Das war also der falsche Weg.</strong></p>
+<p>Deswegen fingen wir an mit Platzhaltern zu arbeiten. Wir haben also Masterfolien in unserem Template erstellt und die Bereiche an denen die Bilder eingefügt werden sollten entsprechend markiert. Später konnten wir dann in python auf die einzelnen PLatzhalter zugreifen und befüllen.</p>
+<p>Formatierungen von Texten und sonstige graphische Äunderungen haben wir ausschließlich in den Masterfolien von Powerpoint gemacht. Dies erschien am sinnvollsten und unkompliziertesten.</p>
+</div>
+<div class="section" id="texte-einfugen">
+<h4>Texte einfügen<a class="headerlink" href="#texte-einfugen" title="Permalink to this headline">¶</a></h4>
+<p>Text konnte relativ einfach hinzugefügt werden:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">slide</span> <span class="o">=</span> <span class="n">pp</span><span class="o">.</span><span class="n">slides</span><span class="o">.</span><span class="n">add_slide</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pp</span><span class="o">.</span><span class="n">slide_layouts</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="c1"># Auswählen des Layouts für die Seite, die in die Präsentation eingefügt wird.</span>
+
+<span class="n">title</span> <span class="o">=</span> <span class="n">slide</span><span class="o">.</span><span class="n">placeholders</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">title</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;Was gibt es für Angriffsarten, die auf den Mensch abzielen?&quot;</span> <span class="c1"># Titeltext verändern</span>
+
+<span class="n">sub_text</span> <span class="o">=</span> <span class="n">slide</span><span class="o">.</span><span class="n">placeholders</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+<span class="n">tf</span> <span class="o">=</span> <span class="n">sub_text</span><span class="o">.</span><span class="n">text_frame</span> <span class="c1"># Textframe bekommen, in dem Text eingefügt werden kann</span>
+<span class="n">p</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">add_paragraph</span><span class="p">()</span> <span class="c1"># Neuen Paragraphen für Text hinzufügen</span>
+<span class="n">p</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="s1">&#39;Die größten Potentiale für Hacker sind die Komprimittierten oder Schwachen Anmeldedaten von Mitarbeitern und das Versenden von Phishing-Mails&#39;</span> <span class="c1"># Paragraph mit Text befüllen</span>
+<span class="n">p</span><span class="o">.</span><span class="n">level</span> <span class="o">=</span> <span class="mi">0</span>  
+
+</pre></div>
+</div>
+<p>Mit einzelnen Paragraphen konnten einzelne Unterpunkte in das Textframe eingefügt werden.</p>
+</div>
+<div class="section" id="diagramme-einfugen">
+<h4>Diagramme einfügen<a class="headerlink" href="#diagramme-einfugen" title="Permalink to this headline">¶</a></h4>
+<p>Bei den Diagrammen haben wir uns wiederum etwas schwer getan. Zwar konnten wir die Diagramme einfach in die PLatzhalter laden, jedoch wurden diese immer abgeschnitten, wenn sie nicht die Größe des Platzhalters hatten. Um das Problem zu lösen mussten wir, bei der Erzeugung der Bilder von den Diagrammen die Höhe und Breite festlegen. Dies konnte einfach als Variable an die Funktion write_image() übergeben werden, die die Plotly Express Figuren als Bilder abspeichert.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Phishing_Graphs</span><span class="p">()</span><span class="o">.</span><span class="n">get_fail_bar</span><span class="p">(</span><span class="s1">&#39;Branche&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">write_image</span><span class="p">(</span><span class="s2">&quot;fail_bar_mark_pp.png&quot;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">900</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">800</span><span class="p">)</span>
+
+</pre></div>
+</div>
+<p>Nachdem das festgelegt war mussten wir dann darauf achten, dass die Platzhalter in der Powerpoint Masterfolien dasselbe Seitenverhältniss hatten, damit nichts abgeschnitten wurde.</p>
 </div>
 </div>
 </div>
