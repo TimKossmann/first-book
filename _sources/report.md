@@ -1,7 +1,7 @@
 # Reports
 ## Allgemein
 
-Die Nutzer des Dashboards haben ebenfalls die Möglichkeit sich zusätzlich zu unserem Dashboard. Weitere Informationen herunter zu laden. Zum Einen können sie sich noch einmal einen Report in Form eines PDF herunterladen. Zum Anderen besteht die Möglichkeit sich die Daten in Form einer Exceldatei herunter zu laden. Da das Ziel ist Menschen in Punkto Cyber Security zu sensibilisieren gibt es ebenfalls die Möglichkeit sich eine Powerpoint herunter zu laden, um andere über das Thema zu informieren.
+Die Nutzer des Dashboards haben ebenfalls die Möglichkeit sich zusätzlich zu unserem Dashboard weitere Informationen herunter zu laden. Zum Einen können sie sich noch einmal einen Report in Form eines PDF herunterladen. Zum Anderen besteht die Möglichkeit sich die Daten in Form einer Exceldatei herunter zu laden. Da das Ziel ist Menschen in Punkto Cyber Security zu sensibilisieren gibt es ebenfalls die Möglichkeit sich eine Powerpoint herunter zu laden, um andere über das Thema zu informieren.
 
 ### Generelles Vorgehen
 
@@ -9,9 +9,46 @@ Um die Möglichkeit zu bieten die Datein zu erstellen haben wir uns zunächst di
 
 Wenn wir uns für eine Technologie entschieden haben, haben wir bei Problemen dennoch geschaut, wie es bei anderen Bibliotheken gemacht wird. Das hat uns besonders beim Erstellen des PDF Reports geholfen.
 
-### Erzeugen von Diagramm Bildern
+### Abbildung der Diagramme
 
-Um downloadbare Dateien zur Verfügung zu stellen müssen die Diagramme zunächst in einer Form vorliegen, die von allen verwendeten Bibliotheken verwendet werden können. Zunächst suchten wir nach einer eleganten Art um die Datein zu verwalten. Es gab die Möglichkeit die erzeugten Bild-Datein, die wir aus den Diagrammen erstellen konnten in temporären Byte Buffern zu speichern. Dies hätte es ermöglicht die Datein nur kurzfristig im Arbeitsspeicher abzulegen und dann wieder zu löschen. Allerdings waren wir uns hier nicht sicher, dass alle Bibliotheken, die wir verwenden werden mit diesem Datenformat umgehen konnten. Deswegen entschieden wir uns die Daten als png-Dateien in dem Projektordner abzulegen. Auch wenn die Bilder hier dauerhaft liegen werden sie für jeden Download neu erstellt um immer die aktuellsten Diagramme zu beinhalten.
+Um downloadbare Dateien zur Verfügung zu stellen müssen die Diagramme zunächst in einer Form vorliegen, die von allen verwendeten Bibliotheken verwendet werden können. Zunächst suchten wir nach einer eleganten Art um die Datein zu verwalten. 
+
+Es gab die Möglichkeit die erzeugten Bild-Datein, die wir aus den Diagrammen erstellen konnten in temporären Byte Buffern zu speichern. Dies hätte es ermöglicht die Datein nur kurzfristig im Arbeitsspeicher abzulegen und dann wieder zu löschen. Allerdings waren wir uns hier nicht sicher, dass alle Bibliotheken, die wir verwenden werden mit diesem Datenformat umgehen konnten. 
+
+Deswegen entschieden wir uns die Daten als png-Dateien in dem Projektordner abzulegen. Auch wenn die Bilder hier dauerhaft liegen werden sie für jeden Download neu erstellt um immer die aktuellsten Diagramme zu beinhalten.
+
+### Diagramm Anpassungen
+
+Im Dashboard und in den Datein waren die Diagramme auch in unterschiedlichen visuellen Umgebungen. So war der Report beispielsweise mit einem weißen Hintergrund, während das Dashboard und die Powerpoint eher einen schwarzen Hintergrund haben. Deswegen haben wir bei fast allen Diagrammen den Darkmode eingeführt:
+
+```
+
+# Linien-Diagramm für Kosten erstellen 
+def create_lineplot(self, year, darkmode=True): 
+    if darkmode:
+        color = "white"
+        bg_color = "rgba(7, 37, 66, 0.8)"
+    else:
+        color = "black"  
+        bg_color = "rgba(255, 255, 255, 0.8)"
+
+    # Code bei der das Diagramm erstellt wird
+
+    fig.update_layout(
+        xaxis= dict(
+                range=[self.df['year'].max() - 7 - 0.5, self.df['year'].max() + 0.5],
+                dtick= 1,
+                ticks = "outside",
+                tickwidth = 1,
+                tickcolor = color, # hier wird die Tickfarbe je nach dem Darkmode bestimmt
+                ticklen = 8,
+                tickfont = dict(family = 'Arial', size = 14),
+                showline = not darkmode, # Bei weißen Hintergründen wird so die Achsenlinie angezeigt
+                linewidth = 1,
+                linecolor = color, # hier wird die Linienfarbe je nach dem Darkmode bestimmt
+        )
+    )
+```
 
 
 

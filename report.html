@@ -206,8 +206,13 @@
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#erzeugen-von-diagramm-bildern">
-     Erzeugen von Diagramm Bildern
+    <a class="reference internal nav-link" href="#abbildung-der-diagramme">
+     Abbildung der Diagramme
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#diagramm-anpassungen">
+     Diagramm Anpassungen
     </a>
    </li>
   </ul>
@@ -259,15 +264,49 @@
 <h1>Reports<a class="headerlink" href="#reports" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="allgemein">
 <h2>Allgemein<a class="headerlink" href="#allgemein" title="Permalink to this headline">¶</a></h2>
-<p>Die Nutzer des Dashboards haben ebenfalls die Möglichkeit sich zusätzlich zu unserem Dashboard. Weitere Informationen herunter zu laden. Zum Einen können sie sich noch einmal einen Report in Form eines PDF herunterladen. Zum Anderen besteht die Möglichkeit sich die Daten in Form einer Exceldatei herunter zu laden. Da das Ziel ist Menschen in Punkto Cyber Security zu sensibilisieren gibt es ebenfalls die Möglichkeit sich eine Powerpoint herunter zu laden, um andere über das Thema zu informieren.</p>
+<p>Die Nutzer des Dashboards haben ebenfalls die Möglichkeit sich zusätzlich zu unserem Dashboard weitere Informationen herunter zu laden. Zum Einen können sie sich noch einmal einen Report in Form eines PDF herunterladen. Zum Anderen besteht die Möglichkeit sich die Daten in Form einer Exceldatei herunter zu laden. Da das Ziel ist Menschen in Punkto Cyber Security zu sensibilisieren gibt es ebenfalls die Möglichkeit sich eine Powerpoint herunter zu laden, um andere über das Thema zu informieren.</p>
 <div class="section" id="generelles-vorgehen">
 <h3>Generelles Vorgehen<a class="headerlink" href="#generelles-vorgehen" title="Permalink to this headline">¶</a></h3>
 <p>Um die Möglichkeit zu bieten die Datein zu erstellen haben wir uns zunächst die Frage nach dem Zweck der Datei gestellt. Da unterschiedliche Bibliotheken verschiedene Vor- und Nachteile haben, konnten wir so besser einschätzen, welche wir nutzen wollen um das Ziel möglichst schnell zu erreichen.</p>
 <p>Wenn wir uns für eine Technologie entschieden haben, haben wir bei Problemen dennoch geschaut, wie es bei anderen Bibliotheken gemacht wird. Das hat uns besonders beim Erstellen des PDF Reports geholfen.</p>
 </div>
-<div class="section" id="erzeugen-von-diagramm-bildern">
-<h3>Erzeugen von Diagramm Bildern<a class="headerlink" href="#erzeugen-von-diagramm-bildern" title="Permalink to this headline">¶</a></h3>
-<p>Um downloadbare Dateien zur Verfügung zu stellen müssen die Diagramme zunächst in einer Form vorliegen, die von allen verwendeten Bibliotheken verwendet werden können. Zunächst suchten wir nach einer eleganten Art um die Datein zu verwalten. Es gab die Möglichkeit die erzeugten Bild-Datein, die wir aus den Diagrammen erstellen konnten in temporären Byte Buffern zu speichern. Dies hätte es ermöglicht die Datein nur kurzfristig im Arbeitsspeicher abzulegen und dann wieder zu löschen. Allerdings waren wir uns hier nicht sicher, dass alle Bibliotheken, die wir verwenden werden mit diesem Datenformat umgehen konnten. Deswegen entschieden wir uns die Daten als png-Dateien in dem Projektordner abzulegen. Auch wenn die Bilder hier dauerhaft liegen werden sie für jeden Download neu erstellt um immer die aktuellsten Diagramme zu beinhalten.</p>
+<div class="section" id="abbildung-der-diagramme">
+<h3>Abbildung der Diagramme<a class="headerlink" href="#abbildung-der-diagramme" title="Permalink to this headline">¶</a></h3>
+<p>Um downloadbare Dateien zur Verfügung zu stellen müssen die Diagramme zunächst in einer Form vorliegen, die von allen verwendeten Bibliotheken verwendet werden können. Zunächst suchten wir nach einer eleganten Art um die Datein zu verwalten.</p>
+<p>Es gab die Möglichkeit die erzeugten Bild-Datein, die wir aus den Diagrammen erstellen konnten in temporären Byte Buffern zu speichern. Dies hätte es ermöglicht die Datein nur kurzfristig im Arbeitsspeicher abzulegen und dann wieder zu löschen. Allerdings waren wir uns hier nicht sicher, dass alle Bibliotheken, die wir verwenden werden mit diesem Datenformat umgehen konnten.</p>
+<p>Deswegen entschieden wir uns die Daten als png-Dateien in dem Projektordner abzulegen. Auch wenn die Bilder hier dauerhaft liegen werden sie für jeden Download neu erstellt um immer die aktuellsten Diagramme zu beinhalten.</p>
+</div>
+<div class="section" id="diagramm-anpassungen">
+<h3>Diagramm Anpassungen<a class="headerlink" href="#diagramm-anpassungen" title="Permalink to this headline">¶</a></h3>
+<p>Im Dashboard und in den Datein waren die Diagramme auch in unterschiedlichen visuellen Umgebungen. So war der Report beispielsweise mit einem weißen Hintergrund, während das Dashboard und die Powerpoint eher einen schwarzen Hintergrund haben. Deswegen haben wir bei fast allen Diagrammen den Darkmode eingeführt:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>
+<span class="c1"># Linien-Diagramm für Kosten erstellen </span>
+<span class="k">def</span> <span class="nf">create_lineplot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">year</span><span class="p">,</span> <span class="n">darkmode</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span> 
+    <span class="k">if</span> <span class="n">darkmode</span><span class="p">:</span>
+        <span class="n">color</span> <span class="o">=</span> <span class="s2">&quot;white&quot;</span>
+        <span class="n">bg_color</span> <span class="o">=</span> <span class="s2">&quot;rgba(7, 37, 66, 0.8)&quot;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">color</span> <span class="o">=</span> <span class="s2">&quot;black&quot;</span>  
+        <span class="n">bg_color</span> <span class="o">=</span> <span class="s2">&quot;rgba(255, 255, 255, 0.8)&quot;</span>
+
+    <span class="c1"># Code bei der das Diagramm erstellt wird</span>
+
+    <span class="n">fig</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span>
+        <span class="n">xaxis</span><span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+                <span class="nb">range</span><span class="o">=</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;year&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">-</span> <span class="mi">7</span> <span class="o">-</span> <span class="mf">0.5</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;year&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">],</span>
+                <span class="n">dtick</span><span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+                <span class="n">ticks</span> <span class="o">=</span> <span class="s2">&quot;outside&quot;</span><span class="p">,</span>
+                <span class="n">tickwidth</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+                <span class="n">tickcolor</span> <span class="o">=</span> <span class="n">color</span><span class="p">,</span> <span class="c1"># hier wird die Tickfarbe je nach dem Darkmode bestimmt</span>
+                <span class="n">ticklen</span> <span class="o">=</span> <span class="mi">8</span><span class="p">,</span>
+                <span class="n">tickfont</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">family</span> <span class="o">=</span> <span class="s1">&#39;Arial&#39;</span><span class="p">,</span> <span class="n">size</span> <span class="o">=</span> <span class="mi">14</span><span class="p">),</span>
+                <span class="n">showline</span> <span class="o">=</span> <span class="ow">not</span> <span class="n">darkmode</span><span class="p">,</span> <span class="c1"># Bei weißen Hintergründen wird so die Achsenlinie angezeigt</span>
+                <span class="n">linewidth</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+                <span class="n">linecolor</span> <span class="o">=</span> <span class="n">color</span><span class="p">,</span> <span class="c1"># hier wird die Linienfarbe je nach dem Darkmode bestimmt</span>
+        <span class="p">)</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
 </div>
 </div>
 <div class="section" id="powerpoint">
