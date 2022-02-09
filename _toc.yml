@@ -6,4 +6,6 @@ root: intro
 chapters:
 - file: markdown
 - file: notebooks
+- file: report
+- file: dashboard
 
