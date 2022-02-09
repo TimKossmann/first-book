@@ -196,6 +196,23 @@
             <nav id="bd-toc-nav" aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#allgemein">
+   Allgemein
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#generelles-vorgehen">
+     Generelles Vorgehen
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#erzeugen-von-diagramm-bildern">
+     Erzeugen von Diagramm Bildern
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#powerpoint">
    Powerpoint
   </a>
@@ -240,6 +257,19 @@
                 
   <div class="tex2jax_ignore mathjax_ignore section" id="reports">
 <h1>Reports<a class="headerlink" href="#reports" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="allgemein">
+<h2>Allgemein<a class="headerlink" href="#allgemein" title="Permalink to this headline">¶</a></h2>
+<p>Die Nutzer des Dashboards haben ebenfalls die Möglichkeit sich zusätzlich zu unserem Dashboard. Weitere Informationen herunter zu laden. Zum Einen können sie sich noch einmal einen Report in Form eines PDF herunterladen. Zum Anderen besteht die Möglichkeit sich die Daten in Form einer Exceldatei herunter zu laden. Da das Ziel ist Menschen in Punkto Cyber Security zu sensibilisieren gibt es ebenfalls die Möglichkeit sich eine Powerpoint herunter zu laden, um andere über das Thema zu informieren.</p>
+<div class="section" id="generelles-vorgehen">
+<h3>Generelles Vorgehen<a class="headerlink" href="#generelles-vorgehen" title="Permalink to this headline">¶</a></h3>
+<p>Um die Möglichkeit zu bieten die Datein zu erstellen haben wir uns zunächst die Frage nach dem Zweck der Datei gestellt. Da unterschiedliche Bibliotheken verschiedene Vor- und Nachteile haben, konnten wir so besser einschätzen, welche wir nutzen wollen um das Ziel möglichst schnell zu erreichen.</p>
+<p>Wenn wir uns für eine Technologie entschieden haben, haben wir bei Problemen dennoch geschaut, wie es bei anderen Bibliotheken gemacht wird. Das hat uns besonders beim Erstellen des PDF Reports geholfen.</p>
+</div>
+<div class="section" id="erzeugen-von-diagramm-bildern">
+<h3>Erzeugen von Diagramm Bildern<a class="headerlink" href="#erzeugen-von-diagramm-bildern" title="Permalink to this headline">¶</a></h3>
+<p>Um downloadbare Dateien zur Verfügung zu stellen müssen die Diagramme zunächst in einer Form vorliegen, die von allen verwendeten Bibliotheken verwendet werden können. Zunächst suchten wir nach einer eleganten Art um die Datein zu verwalten. Es gab die Möglichkeit die erzeugten Bild-Datein, die wir aus den Diagrammen erstellen konnten in temporären Byte Buffern zu speichern. Dies hätte es ermöglicht die Datein nur kurzfristig im Arbeitsspeicher abzulegen und dann wieder zu löschen. Allerdings waren wir uns hier nicht sicher, dass alle Bibliotheken, die wir verwenden werden mit diesem Datenformat umgehen konnten. Deswegen entschieden wir uns die Daten als png-Dateien in dem Projektordner abzulegen. Auch wenn die Bilder hier dauerhaft liegen werden sie für jeden Download neu erstellt um immer die aktuellsten Diagramme zu beinhalten.</p>
+</div>
+</div>
 <div class="section" id="powerpoint">
 <h2>Powerpoint<a class="headerlink" href="#powerpoint" title="Permalink to this headline">¶</a></h2>
 <p>Es ist ebenfalls möglich die Diagramme und Informationen als Powerpoint zu exportieren. Das Ziel der Powerpoint ist es dem Nutzer eine Möglichkeit zu bieten, die Diagramme besser zu interpretieren. Gegebenenfalls kann die Präsentation auch von Zuhörern genutzt werden um andere für Themen der Cyber Sicherheit zu sensibilisieren.</p>
@@ -293,7 +323,7 @@
 <div class="section" id="fazit-zu-powerpoint">
 <h3>Fazit zu Powerpoint<a class="headerlink" href="#fazit-zu-powerpoint" title="Permalink to this headline">¶</a></h3>
 <p>Die Python-Bibliothek für Powerpoint funktioniert im Grunde recht gut. Einfach Präsentationen können damit relativ schnell umgesetzt werden. Wenn alles funktioniert und die Präsentation erstellt wird ist es auch sehr befriedigend zu sehen, wie die Änderungen der Diagramme automatisch in die Powerpoint übernommen werden ohne, dass man zusätzlichen Aufwand betreiben muss.</p>
-<p>Der Weg dahin, dass alles funktioniert würden wir aber eher als mühselig beschreiben. Die Dokumentation der python-pptx Bibliothek ist eher dürftig und oft braucht es für Lösungen Workarounds, da oft Dinge nicht einfach so funktionieren. Ein Beispiel war hier die Folie über die Ziele von Phishing Mails:</p>
+<p>Der Weg dahin, dass alles funktioniert würden wir aber eher als mühselig beschreiben. Die Dokumentation der python-pptx Bibliothek ist eher dürftig und oft braucht es für Lösungen Workarounds, da Funktionen oft nicht einfach so funktionieren. Ein gutes Beispiel war hier die Erstellung der Folie über die Ziele von Phishing Mails:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>
 <span class="n">added_img</span> <span class="o">=</span> <span class="mi">0</span>
 <span class="n">added_txt</span> <span class="o">=</span> <span class="mi">0</span>
@@ -302,7 +332,7 @@
 <span class="n">img_names</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;phishing_link_pp.png&quot;</span><span class="p">,</span> <span class="s2">&quot;phishing_input_pp.png&quot;</span><span class="p">,</span> <span class="s2">&quot;phishing_attach_pp.png&quot;</span><span class="p">]</span>
 <span class="n">img_txt</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">pg</span><span class="o">.</span><span class="n">get_text_for_dounut</span><span class="p">(</span><span class="s2">&quot;link&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">pg</span><span class="o">.</span><span class="n">get_text_for_dounut</span><span class="p">(</span><span class="s2">&quot;input&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">pg</span><span class="o">.</span><span class="n">get_text_for_dounut</span><span class="p">(</span><span class="s2">&quot;attach&quot;</span><span class="p">)]</span>
 
-<span class="c1"># itterieren über die Platzhalter der Folie, da die Indizes nicht angesteuert werden können</span>
+<span class="c1"># itterieren über die Platzhalter der Folie, da die Indizes nicht angesteuert werden konnten</span>
 <span class="k">for</span> <span class="n">plc</span> <span class="ow">in</span> <span class="n">phishing_slide</span><span class="o">.</span><span class="n">placeholders</span><span class="p">:</span>
     <span class="n">plc_type</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">plc</span><span class="o">.</span><span class="n">placeholder_format</span><span class="o">.</span><span class="n">type</span><span class="p">)</span> <span class="c1"># Öfteres aufrufen des Datentyps führt zu Fehlern. Deswegen wird es als Variable gespeichert.</span>
     <span class="k">if</span> <span class="s2">&quot;PICTURE&quot;</span> <span class="ow">in</span> <span class="n">plc_type</span><span class="p">:</span>

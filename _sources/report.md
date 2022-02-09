@@ -1,4 +1,20 @@
 # Reports
+## Allgemein
+
+Die Nutzer des Dashboards haben ebenfalls die Möglichkeit sich zusätzlich zu unserem Dashboard. Weitere Informationen herunter zu laden. Zum Einen können sie sich noch einmal einen Report in Form eines PDF herunterladen. Zum Anderen besteht die Möglichkeit sich die Daten in Form einer Exceldatei herunter zu laden. Da das Ziel ist Menschen in Punkto Cyber Security zu sensibilisieren gibt es ebenfalls die Möglichkeit sich eine Powerpoint herunter zu laden, um andere über das Thema zu informieren.
+
+### Generelles Vorgehen
+
+Um die Möglichkeit zu bieten die Datein zu erstellen haben wir uns zunächst die Frage nach dem Zweck der Datei gestellt. Da unterschiedliche Bibliotheken verschiedene Vor- und Nachteile haben, konnten wir so besser einschätzen, welche wir nutzen wollen um das Ziel möglichst schnell zu erreichen. 
+
+Wenn wir uns für eine Technologie entschieden haben, haben wir bei Problemen dennoch geschaut, wie es bei anderen Bibliotheken gemacht wird. Das hat uns besonders beim Erstellen des PDF Reports geholfen.
+
+### Erzeugen von Diagramm Bildern
+
+Um downloadbare Dateien zur Verfügung zu stellen müssen die Diagramme zunächst in einer Form vorliegen, die von allen verwendeten Bibliotheken verwendet werden können. Zunächst suchten wir nach einer eleganten Art um die Datein zu verwalten. Es gab die Möglichkeit die erzeugten Bild-Datein, die wir aus den Diagrammen erstellen konnten in temporären Byte Buffern zu speichern. Dies hätte es ermöglicht die Datein nur kurzfristig im Arbeitsspeicher abzulegen und dann wieder zu löschen. Allerdings waren wir uns hier nicht sicher, dass alle Bibliotheken, die wir verwenden werden mit diesem Datenformat umgehen konnten. Deswegen entschieden wir uns die Daten als png-Dateien in dem Projektordner abzulegen. Auch wenn die Bilder hier dauerhaft liegen werden sie für jeden Download neu erstellt um immer die aktuellsten Diagramme zu beinhalten.
+
+
+
 ## Powerpoint
 
 Es ist ebenfalls möglich die Diagramme und Informationen als Powerpoint zu exportieren. Das Ziel der Powerpoint ist es dem Nutzer eine Möglichkeit zu bieten, die Diagramme besser zu interpretieren. Gegebenenfalls kann die Präsentation auch von Zuhörern genutzt werden um andere für Themen der Cyber Sicherheit zu sensibilisieren.
@@ -64,7 +80,7 @@ Nachdem das festgelegt war mussten wir dann darauf achten, dass die Platzhalter 
 
 Die Python-Bibliothek für Powerpoint funktioniert im Grunde recht gut. Einfach Präsentationen können damit relativ schnell umgesetzt werden. Wenn alles funktioniert und die Präsentation erstellt wird ist es auch sehr befriedigend zu sehen, wie die Änderungen der Diagramme automatisch in die Powerpoint übernommen werden ohne, dass man zusätzlichen Aufwand betreiben muss.
 
-Der Weg dahin, dass alles funktioniert würden wir aber eher als mühselig beschreiben. Die Dokumentation der python-pptx Bibliothek ist eher dürftig und oft braucht es für Lösungen Workarounds, da oft Dinge nicht einfach so funktionieren. Ein Beispiel war hier die Folie über die Ziele von Phishing Mails:
+Der Weg dahin, dass alles funktioniert würden wir aber eher als mühselig beschreiben. Die Dokumentation der python-pptx Bibliothek ist eher dürftig und oft braucht es für Lösungen Workarounds, da Funktionen oft nicht einfach so funktionieren. Ein gutes Beispiel war hier die Erstellung der Folie über die Ziele von Phishing Mails:
 
 ```
 
@@ -75,7 +91,7 @@ added_txt = 0
 img_names = ["phishing_link_pp.png", "phishing_input_pp.png", "phishing_attach_pp.png"]
 img_txt = [self.pg.get_text_for_dounut("link"), self.pg.get_text_for_dounut("input"), self.pg.get_text_for_dounut("attach")]
 
-# itterieren über die Platzhalter der Folie, da die Indizes nicht angesteuert werden können
+# itterieren über die Platzhalter der Folie, da die Indizes nicht angesteuert werden konnten
 for plc in phishing_slide.placeholders:
     plc_type = str(plc.placeholder_format.type) # Öfteres aufrufen des Datentyps führt zu Fehlern. Deswegen wird es als Variable gespeichert.
     if "PICTURE" in plc_type:
@@ -88,6 +104,8 @@ for plc in phishing_slide.placeholders:
         added_txt += 1 # Wenn ein Text eingefügt wurde wird der Textzähler erhöht
 
 ```
+
+
 
 
 
