@@ -525,5 +525,123 @@ Das besondere hierbei ist das Anzeigen der Informationen über die verschiedenen
 
 Eigentlich wollten wir die Informationen direkt im Diagramm anzeigen. Leider war das Problem, dass das Diagramm von plotly Express schon klickbar. Durch klicken wird eine kleine Animation ausgeführt, die in das Feld führt. Unsere Idee war die Information mittig im Diagramm anzuzeigen. Leider hätten wir dafür ein neues Diagramm erstellen müssen mit einer Annotation. Durch das ständige überschreiben der Treemap wurden zum einen die Animationen unterbrochen und wirkten dadurch komisch. Außerdem mussten wir das neue Diagramm so erstellen als hätte der Nutzer auf einen Wert geklickt. Das konnten wir zwar darstellen aber dann gab es keine Möglichkeit wieder zurück zu kommen.
 
-### data_breaches_attack_vectors.py / Hackermethoden
+### phishing.py / Phishing
 
+
+#### Phishing Arten
+Durch die Seite Phishing wollten wir die Nutzer vor allem nochmal sensibilisieren auf die Arten zu achten. Hierfür haben wir drei Donut-Diagramme erstellt, die die Häufigkeit der verschiedenen Phishingarten darstellt. Um auf den ersten Blick erkennen zu lassen, um welche Art es sich Handelt haben wir neben Text auch Bilder verwendet.
+
+```
+def get_link_donut(self, darkmode=True, show_text=True):
+    fig = px.pie({"link/no_link": ["Link", "No"], "value": [self.link, 100-self.link]}, names="link/no_link", values="value", hole=0.7, color="link/no_link", 
+    color_discrete_map={"Link": 'rgb(62, 175, 182)', "No": 'rgb(57, 81, 104)'})
+    text = ""
+    if show_text:
+        text = self.get_text_for_dounut("link")
+    return self.update_donut_fig(fig, "E269", "Link aufrufen", darkmode, text)
+```
+
+Um die Diagramme gleich aussehen zu lassen, haben wir die Funktion update_donut_fig(figure, img_name, inner_text, darkmode, text_below) hier wird jede figure überarbeitet und mit den nötigen Einstellungen versehen. Im nächsten Abschnitt werden teile des Codes gezeigt:
+
+```
+def update_donut_fig(self, fig, img_name, txt, darkmode, expl_txt="" ):
+    
+
+    # hinzufügen des Bildes
+    fig.add_layout_image(
+        dict(
+            source=img,
+            xref="paper", yref="paper",
+            x=0.5, y=0.6,
+            sizex=0.3, sizey=0.3,
+            xanchor="center", yanchor="middle"
+        )
+    )
+
+    # hinzufügen des inneren Textes
+    fig.add_annotation(
+        text=txt, 
+        xref="paper", 
+        yref="paper",
+        x=0.5, y=0.45,
+        showarrow=False,
+        font_size=18,
+        font_color=color
+    )
+    
+    # hinzufügen des Textes unterhalbes des Diagramms
+    fig.add_annotation(
+        text=expl_txt, 
+        xref="paper", 
+        yref="paper",
+        x=0.5, y=0.0,
+        showarrow=False,
+        font_size=16,
+        font_color=color
+    )
+
+    fig.update_traces(textinfo='none', sort=False)
+    fig.layout.update(showlegend=False, plot_bgcolor= 'rgba(0, 0, 0, 0)',
+        paper_bgcolor= 'rgba(0, 0, 0, 0)',)
+    return fig
+```
+
+#### Phishing Zielgruppen
+
+Hier wollten wir noch einmal darstellen, wer besonders anfällig ist für Phishing Mails. Dafür haben wir ein Balkendiagramm erstellt. Dem Nutzer wird hier die Möglichkeit geboten zu wählen, ob er die Fehlequoten der Abteilungen oder Branchen filtern möchte. Ebenfalls kann er seine Branche/ Abteilung hervorheben.
+
+:::{note}
+
+Der genaue Code für die Diagrammerstellung wird nicht dargestellt, da das Prinzip bereits im Abschnitt Summierte Schäden erläutert wurde.  
+
+:::
+
+### password.py / Passwortsicherheit
+
+Zum einen sollen die Nutzer angeregt werden vielleicht eigene Passwörter in der Passwortwolke zu finden. Die wird mit der python Bibliothek wordcloud erzeugt.
+
+```
+self.df.isna().sum() # Bearbeiten des Dataframes
+
+# Erzeugen des JSONs mit Textelemente und größe in der Wordcloud 
+text = {}
+for index, row in self.df.iterrows():
+    text[str(row["Password"])] = row["size"]
+
+# Erstellen der Form für die Wordcloud -> Hier wird die Form eines Kreises erstellt
+x, y = np.ogrid[:500, :500]
+mask = (x - 250) ** 2 + (y - 250) ** 2 > 250 ** 2 
+mask = 255 * mask.astype(int)
+
+# Farben werden je nach darkmode erzeugt
+if darkmode:
+    color = "rgb(7, 37, 66)"
+else:
+    color = "rgb(255, 255, 255)"
+self.word_cloud = WordCloud(collocations = False, background_color=color,width=1920, height=1080, mask=mask).generate_from_frequencies(text)
+if darkmode:
+    def white_color_func(word, font_size, position,orientation,random_state=None, **kwargs):
+        return "hsl(0, 100%, 100%)"
+    self.word_cloud.recolor(color_func = white_color_func)
+else: 
+    def blue_color_func(word, font_size, position,orientation,random_state=None, **kwargs):
+        return "hsl(209, 81%, 14%)"
+    self.word_cloud.recolor(color_func = blue_color_func)
+
+return self.word_cloud.to_image() # Wordcloud wird als Bild zurückgegeben
+``` 
+
+
+Neben der Wordcloud können Nutzer ebenfalls ihr Passwort auf die Stärke testen lassen. Die Stärke des Passworts wird so berechnet, dass alle Möglichkeiten genommen werden und dann durch die Anzahl der Möglichkeiten geteilt, die ein Computer testen kann.
+```
+# Formel für die Berechnung
+
+Möglichkeiten * Passwortlänge / VersucheProSekunde
+
+Möglichkeiten = (Zahlen ? + 10) + (Kleinbuchstaben ? + 26) + (Großbuchstaben ? + 26) + (Sonderzeichen ? + 32)
+VersucheProSekunde = 1.000.000.000
+```
+
+
+
+## Probleme
