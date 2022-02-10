@@ -238,8 +238,8 @@
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#data-breches-cost-py-schaden-durch-hacks">
-     data_breches_cost.py / Schaden durch Hacks
+    <a class="reference internal nav-link" href="#data-breaches-cost-py-schaden-durch-hacks">
+     data_breaches_cost.py / Schaden durch Hacks
     </a>
     <ul class="nav section-nav flex-column">
      <li class="toc-h4 nav-item toc-entry">
@@ -493,8 +493,8 @@
 </pre></div>
 </div>
 </div>
-<div class="section" id="data-breches-cost-py-schaden-durch-hacks">
-<h3>data_breches_cost.py / Schaden durch Hacks<a class="headerlink" href="#data-breches-cost-py-schaden-durch-hacks" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="data-breaches-cost-py-schaden-durch-hacks">
+<h3>data_breaches_cost.py / Schaden durch Hacks<a class="headerlink" href="#data-breaches-cost-py-schaden-durch-hacks" title="Permalink to this headline">¶</a></h3>
 <p>Hier wollen wir dem Nutzer klar machen, was für Schaden Cyber Attacken anrichten können. Der Anwender kann sehen, wie sich die Summe der einzelnen Jahre, sowie der Durchschnitt verhält. Ebenfalls wird dargestellt, was die größten Schäden durch Datenlecks bei einzelnen Firmen in einem Jahr waren. Dem Nutzer wird außerdem ein Slider angeboten, mit dem er verschiedene Jahre auswählen kann.</p>
 <div class="section" id="summierte-schaden">
 <h4>Summierte Schäden<a class="headerlink" href="#summierte-schaden" title="Permalink to this headline">¶</a></h4>
@@ -574,23 +574,66 @@ Das Diagramm besteht dabei eigentlich aus vier Diagrammen:</p>
             <span class="p">),</span>
         <span class="p">)</span>
 
-        <span class="n">avg_fig</span> <span class="o">=</span> <span class="n">px</span><span class="o">.</span><span class="n">line</span><span class="p">(</span><span class="n">avg_year</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s2">&quot;year&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;avg&quot;</span><span class="p">,</span> 
-                                <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Testtitle&#39;</span><span class="p">,</span> <span class="n">markers</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">line_shape</span><span class="o">=</span><span class="s1">&#39;spline&#39;</span><span class="p">)</span>
-        <span class="n">avg_fig</span><span class="o">.</span><span class="n">update_traces</span><span class="p">(</span>
-           
-            <span class="n">line</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
-                <span class="n">smoothing</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span>
-                <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;rgb(159, 90, 253)&#39;</span><span class="p">,</span>
-                <span class="n">width</span> <span class="o">=</span> <span class="mi">4</span>
-            <span class="p">),</span>
-        <span class="p">)</span>
 </pre></div>
 </div>
-<ul class="simple">
-<li><p>Durchschnitt über die Jahre</p></li>
-<li><p>Punktmarker welches Jahr markiert ist für die Jahressumme (Scatterplot)</p></li>
-<li><p>Punktmarker welches Jahr markiert ist für den Durchschnitt (Scatterplot)</p></li>
-</ul>
+<p><strong>Durchschnitt über die Jahre</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">avg_fig</span> <span class="o">=</span> <span class="n">px</span><span class="o">.</span><span class="n">line</span><span class="p">(</span><span class="n">avg_year</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s2">&quot;year&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;avg&quot;</span><span class="p">,</span> 
+                        <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Testtitle&#39;</span><span class="p">,</span> <span class="n">markers</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">line_shape</span><span class="o">=</span><span class="s1">&#39;spline&#39;</span><span class="p">)</span>
+<span class="n">avg_fig</span><span class="o">.</span><span class="n">update_traces</span><span class="p">(</span>
+    <span class="n">line</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+        <span class="n">smoothing</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span>
+        <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;rgb(159, 90, 253)&#39;</span><span class="p">,</span>
+        <span class="n">width</span> <span class="o">=</span> <span class="mi">4</span>
+    <span class="p">),</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Punktmarker welches Jahr markiert ist für die Jahressumme (Scatterplot)</strong>
+<strong>&amp;</strong>
+<strong>Punktmarker welches Jahr markiert ist für den Durchschnitt (Scatterplot)</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">avg_point</span> <span class="o">=</span> <span class="n">avg_year</span><span class="p">[</span><span class="s1">&#39;avg&#39;</span><span class="p">][</span><span class="n">avg_year</span><span class="p">[</span><span class="s2">&quot;year&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">year</span><span class="p">)]</span>
+        <span class="n">sum_for_year</span> <span class="o">=</span> <span class="n">sum_df</span><span class="p">[</span><span class="n">sum_df</span><span class="p">[</span><span class="s2">&quot;year&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">year</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;records lost&#39;</span><span class="p">]</span>
+        <span class="n">switcher</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">sum_for_year</span> <span class="o">&lt;</span> <span class="n">avg_point</span><span class="p">):</span>
+            <span class="n">switcher</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+        <span class="n">fig2</span> <span class="o">=</span> <span class="n">px</span><span class="o">.</span><span class="n">scatter</span><span class="p">({</span><span class="s2">&quot;year&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">year</span><span class="p">],</span> <span class="s2">&quot;avg&quot;</span><span class="p">:</span><span class="n">avg_point</span><span class="p">},</span> <span class="n">x</span><span class="o">=</span><span class="s2">&quot;year&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;avg&quot;</span><span class="p">)</span>
+        <span class="n">fig3</span> <span class="o">=</span> <span class="n">px</span><span class="o">.</span><span class="n">scatter</span><span class="p">({</span><span class="s2">&quot;year&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">year</span><span class="p">],</span> <span class="s2">&quot;avg&quot;</span><span class="p">:</span><span class="n">sum_for_year</span><span class="p">},</span> <span class="n">x</span><span class="o">=</span><span class="s2">&quot;year&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;avg&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Am Ende werden hier noch die Annotations hinzugefügt um die Punkte zu betiteln:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="o">.</span><span class="n">add_annotation</span><span class="p">(</span>
+    <span class="n">x</span><span class="o">=</span><span class="n">year</span><span class="p">,</span>
+    <span class="n">y</span><span class="o">=</span><span class="n">avg_point</span><span class="p">,</span>
+    <span class="n">xref</span><span class="o">=</span><span class="s2">&quot;x&quot;</span><span class="p">,</span>
+    <span class="n">yref</span><span class="o">=</span><span class="s2">&quot;y&quot;</span><span class="p">,</span>
+    <span class="n">ayref</span><span class="o">=</span><span class="s2">&quot;y&quot;</span><span class="p">,</span>
+    <span class="n">yshift</span><span class="o">=-</span><span class="mi">30</span><span class="o">*</span><span class="n">switcher</span><span class="p">,</span>
+    <span class="n">font</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+        <span class="n">size</span><span class="o">=</span><span class="mi">14</span><span class="p">,</span>
+        <span class="n">color</span><span class="o">=</span><span class="s2">&quot;rgb(159, 90, 253)&quot;</span>
+        <span class="p">),</span>
+    <span class="n">text</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Durchschnitt&lt;br&gt; </span><span class="si">{</span><span class="nb">int</span><span class="p">(</span><span class="n">avg_point</span><span class="o">.</span><span class="n">round</span><span class="p">())</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2"> $&quot;</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">,</span> <span class="s2">&quot;.&quot;</span><span class="p">),</span>
+    <span class="n">showarrow</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">bgcolor</span><span class="o">=</span><span class="n">bg_color</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">add_annotation</span><span class="p">(</span>
+    <span class="n">x</span><span class="o">=</span><span class="n">year</span><span class="p">,</span>
+    <span class="n">y</span><span class="o">=</span><span class="n">sum_for_year</span><span class="p">,</span>
+    <span class="n">xref</span><span class="o">=</span><span class="s2">&quot;x&quot;</span><span class="p">,</span>
+    <span class="n">yref</span><span class="o">=</span><span class="s2">&quot;y&quot;</span><span class="p">,</span>
+    <span class="n">ayref</span><span class="o">=</span><span class="s2">&quot;y&quot;</span><span class="p">,</span>
+    <span class="n">yshift</span><span class="o">=</span><span class="mi">50</span><span class="o">*</span><span class="n">switcher</span><span class="p">,</span>
+    <span class="n">font</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+        <span class="n">size</span><span class="o">=</span><span class="mi">14</span><span class="p">,</span>
+        <span class="n">color</span><span class="o">=</span><span class="s2">&quot;#4DDBE3&quot;</span>
+        <span class="p">),</span>
+    <span class="n">text</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Schaden im&lt;br&gt;Jahr </span><span class="si">{</span><span class="n">year</span><span class="si">}</span><span class="s2">:&lt;br&gt; </span><span class="si">{</span><span class="nb">int</span><span class="p">(</span><span class="n">sum_for_year</span><span class="o">.</span><span class="n">round</span><span class="p">())</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2"> $&quot;</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">,</span> <span class="s2">&quot;.&quot;</span><span class="p">),</span>
+    <span class="n">showarrow</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">bgcolor</span><span class="o">=</span><span class="n">bg_color</span><span class="p">,</span>
+    
+<span class="p">)</span>
+</pre></div>
+</div>
 </div>
 </div>
 </div>

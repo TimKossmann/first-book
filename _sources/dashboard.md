@@ -244,7 +244,7 @@ def render_content(tab):
         return phishing.get_layout()
 ```
 
-### data_breches_cost.py / Schaden durch Hacks
+### data_breaches_cost.py / Schaden durch Hacks
 
 Hier wollen wir dem Nutzer klar machen, was für Schaden Cyber Attacken anrichten können. Der Anwender kann sehen, wie sich die Summe der einzelnen Jahre, sowie der Durchschnitt verhält. Ebenfalls wird dargestellt, was die größten Schäden durch Datenlecks bei einzelnen Firmen in einem Jahr waren. Dem Nutzer wird außerdem ein Slider angeboten, mit dem er verschiedene Jahre auswählen kann.
 
@@ -328,18 +328,67 @@ df_fig1 = (sum_df)
             ),
         )
 
-        avg_fig = px.line(avg_year, x="year", y="avg", 
-                                title='Testtitle', markers=False, line_shape='spline')
-        avg_fig.update_traces(
-           
-            line = dict(
-                smoothing=0.8,
-                color = 'rgb(159, 90, 253)',
-                width = 4
-            ),
-        )
 ```
-- Durchschnitt über die Jahre 
-- Punktmarker welches Jahr markiert ist für die Jahressumme (Scatterplot)
-- Punktmarker welches Jahr markiert ist für den Durchschnitt (Scatterplot)
+**Durchschnitt über die Jahre**
+```
+avg_fig = px.line(avg_year, x="year", y="avg", 
+                        title='Testtitle', markers=False, line_shape='spline')
+avg_fig.update_traces(
+    line = dict(
+        smoothing=0.8,
+        color = 'rgb(159, 90, 253)',
+        width = 4
+    ),
+)
+```
+
+**Punktmarker welches Jahr markiert ist für die Jahressumme (Scatterplot)**
+**&**
+**Punktmarker welches Jahr markiert ist für den Durchschnitt (Scatterplot)**
+```
+avg_point = avg_year['avg'][avg_year["year"].index(year)]
+        sum_for_year = sum_df[sum_df["year"] == year].iloc[0]['records lost']
+        switcher = 1
+        if (sum_for_year < avg_point):
+            switcher = -1
+        fig2 = px.scatter({"year": [year], "avg":avg_point}, x="year", y="avg")
+        fig3 = px.scatter({"year": [year], "avg":sum_for_year}, x="year", y="avg")
+```
+
+
+Am Ende werden hier noch die Annotations hinzugefügt um die Punkte zu betiteln:
+
+```
+fig.add_annotation(
+    x=year,
+    y=avg_point,
+    xref="x",
+    yref="y",
+    ayref="y",
+    yshift=-30*switcher,
+    font=dict(
+        size=14,
+        color="rgb(159, 90, 253)"
+        ),
+    text=f"Durchschnitt<br> {int(avg_point.round()):,} $".replace(",", "."),
+    showarrow=False,
+    bgcolor=bg_color,
+)
+fig.add_annotation(
+    x=year,
+    y=sum_for_year,
+    xref="x",
+    yref="y",
+    ayref="y",
+    yshift=50*switcher,
+    font=dict(
+        size=14,
+        color="#4DDBE3"
+        ),
+    text=f"Schaden im<br>Jahr {year}:<br> {int(sum_for_year.round()):,} $".replace(",", "."),
+    showarrow=False,
+    bgcolor=bg_color,
+    
+)
+```
 
