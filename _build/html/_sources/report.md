@@ -15,7 +15,16 @@ Um downloadbare Dateien zur Verfügung zu stellen müssen die Diagramme zunächs
 
 Es gab die Möglichkeit die erzeugten Bild-Datein, die wir aus den Diagrammen erstellen konnten in temporären Byte Buffern zu speichern. Dies hätte es ermöglicht die Datein nur kurzfristig im Arbeitsspeicher abzulegen und dann wieder zu löschen. Allerdings waren wir uns hier nicht sicher, dass alle Bibliotheken, die wir verwenden werden mit diesem Datenformat umgehen konnten. 
 
-Deswegen entschieden wir uns die Daten als png-Dateien in dem Projektordner abzulegen. Auch wenn die Bilder hier dauerhaft liegen werden sie für jeden Download neu erstellt um immer die aktuellsten Diagramme zu beinhalten.
+Deswegen entschieden wir uns die Daten als png-Dateien in dem Projektordner abzulegen. Auch wenn die Bilder hier dauerhaft liegen werden sie für jeden Download neu erstellt um immer die aktuellsten Diagramme zu beinhalten. 
+
+Beispiel für die Erzeugung eines png Bildes:
+
+```
+pg = Phishing_Graphs() # Aufrufen der Klasse Phishing Graphs
+# Erstellung des PNG eines Diagramms
+pg.get_fail_bar('Abteilung', None, False).write_image("fail_bar_type_name.png", width=900, height=800, scale=1)
+
+```
 
 ### Diagramm Anpassungen
 
@@ -50,7 +59,70 @@ def create_lineplot(self, year, darkmode=True):
     )
 ```
 
+## Daten in Excelform
 
+Wenn die Nutzer nur die Daten verwenden wollen können sie diese auf jeder Seite des Dashboards runterladen. Die Daten werden dann in einer Exceldatei bereitgestellt
+
+### Excel Datei mit einem Tabellenblatt
+
+Um die Datei zu erstellen werden zunächst die Daten aus den vorhandenen Dataframes überarbeitet. Hier werden Überschriften angepasst und die unbenutzte Spalten entfernt. 
+
+```
+def get_excel_df(self):
+        res = self.wc.df.copy()
+        res.drop('size', inplace=True, axis=1)
+        res.drop('note', inplace=True, axis=1)
+        res = res.rename(
+            columns={
+                'Password': 'Passwort', 
+                'category': 'Kategorie', 
+                'rank': 'Platz', })
+        return res.to_excel
+```
+
+Am Ende wird die Funktion des Dataframes to Excel zurückgegeben, die dann an das HTML-Element im Code zurückgegben wird und ausgeführt wird sobald der Nutzer den Button drückt. Ebenfalls werden dann der Name der Datei und der Name des Tabellenblattes festgelegt wird.
+
+```
+@app.callback(
+    Output("download-password-excel", "data"),
+    Input("password_btn", "n_clicks"),
+    prevent_initial_call=True,
+)
+def download(n_clicks):
+    return dcc.send_data_frame(pp.get_excel_df(), "Passwörter.xlsx", sheet_name="Passwörter")
+```
+### Excel Datei mit einem Tabellenblatt
+
+Auf manchen Dashboard Seiten sind jedoch auch mehrere Datensätze hinterlegt. Um diese Daten trotzdem vorher alle in eine Exceldatei mit mehreren Tabellenblättern zu schreiben muss die Tabelle vorher mit einem Excelwriter geschrieben werden.
+
+```
+def get_excel(self):
+    writer = pd.ExcelWriter('Phishing.xlsx', engine="xlsxwriter") # Name der Datei wird direkt am Anfang festgelegt
+    copytoexcel = pd.DataFrame(self.pg.get_fail_df())
+    copytoexcel.to_excel(writer, sheet_name="Fehlerquoten") # Ein Dataframe wird in ein Tabellenblatt der Excel Datei geschrieben
+    copytoexcel = pd.DataFrame(self.pg.get_lia_df())
+    copytoexcel.to_excel(writer, sheet_name="Phishing Absichten")
+    writer.save()
+```
+
+Wenn der Nutzer nun die Datei anfordert wird die gespeicherte Excel Datei direkt an den Nutzer gesendet.
+
+```
+@app.callback(
+    Output("download-phishing-excel", "data"),
+    Input("phishing_btn", "n_clicks"),
+    prevent_initial_call=True,
+)
+def download(n_clicks):
+    phishing.get_excel()
+    return dcc.send_file('Phishing.xlsx')
+```
+
+### Fazit zu Excel
+
+Da sich Pandas Dataframes leicht in Excel Datein umwandeln lassen ist es sehr einfach gewesen die Daten dem Nuzter zur Verfügung zu stellen. Es mussten lediglich die Spaltennamen angepasst werden und in manchen Fällen die Datentypen so angepasst werden, dass Excel diese interpretieren konnte.
+
+Das Ziel den Nutzern die Daten so zur Verfügung zu stellen konnte sehr einfach und schnell umgesetzt werden.
 
 ## Powerpoint
 
@@ -75,7 +147,7 @@ pp.save("Presentation.pptx")
 
 Die erste Herausforderung, die sich uns stellte, war das Layouten der einzelnen Folien. Unsere Diagramme hatten alle unterschiedliche Formate. So waren die Diagramme der Kosten eher im Querformat und die Diagramme aus Phishing hatten eher ein Hochformat.
 
-Nachdem wir uns überlegt hatten, wie die einzelnen Folien ungefähr aussehen sollten ging es darum diese auch so mit python umzusetzen. Dazu hatten wir verschiedene Möglichkeiten. Zunächst haben wir versucht die Diagramme und Texte auf einer blanken Vorlagenfolie zu platzieren. Das stellte sich jedoch als sehr schwierig heraus, da man die Positionen auf der Folie mit Abständen zum Rand definiert. Für uns war es dann jedoch nicht möglich zu berechnen, wo der Text auf die Folie geschrieben werden sollte, denn wir hatten den Abstand zum Rand aber nicht die größe des Diagramms. Somit wurde es eher zu einem Try-and-Error-Spiel die Texte richtig zu platzieren, das jedes mal von neuem losging, wenn Texte oder Diagramme angepasst wurden. **Das war also der falsche Weg.**
+Nachdem wir uns überlegt hatten, wie die einzelnen Folien ungefähr aussehen sollten ging es darum diese auch so mit python umzusetzen. Dazu hatten wir verschiedene Möglichkeiten. Zunächst haben wir versucht die Diagramme und Texte auf einer blanken Vorlagenfolie zu platzieren. Das stellte sich jedoch als sehr schwierig heraus, da man die Positionen auf der Folie mit Abständen zum Rand definiert. Für uns war es dann jedoch nicht möglich zu berechnen, wo der Text auf die Folie geschrieben werden sollte, denn wir hatten den Abstand zum Rand aber nicht die größe des Diagramms. Somit wurde es eher zu einem Trial-and-Error-Spiel die Texte richtig zu platzieren, das jedes mal von neuem losging, wenn Texte oder Diagramme angepasst wurden. **Das war also der falsche Weg.**
 
 Deswegen fingen wir an mit Platzhaltern zu arbeiten. Wir haben also Masterfolien in unserem Template erstellt und die Bereiche an denen die Bilder eingefügt werden sollten entsprechend markiert. Später konnten wir dann in python auf die einzelnen PLatzhalter zugreifen und befüllen. 
 
@@ -141,6 +213,7 @@ for plc in phishing_slide.placeholders:
         added_txt += 1 # Wenn ein Text eingefügt wurde wird der Textzähler erhöht
 
 ```
+
 
 
 

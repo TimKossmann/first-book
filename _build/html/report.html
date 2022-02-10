@@ -51,6 +51,7 @@
     <script async="async" src="_static/sphinx-thebe.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Dashboard" href="dashboard.html" />
     <link rel="prev" title="Content with notebooks" href="notebooks.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en" />
@@ -106,6 +107,11 @@
  <li class="toctree-l1 current active">
   <a class="current reference internal" href="#">
    Reports
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="dashboard.html">
+   Dashboard
   </a>
  </li>
 </ul>
@@ -218,6 +224,28 @@
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#daten-in-excelform">
+   Daten in Excelform
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#excel-datei-mit-einem-tabellenblatt">
+     Excel Datei mit einem Tabellenblatt
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id1">
+     Excel Datei mit einem Tabellenblatt
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#fazit-zu-excel">
+     Fazit zu Excel
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#powerpoint">
    Powerpoint
   </a>
@@ -275,6 +303,13 @@
 <p>Um downloadbare Dateien zur Verfügung zu stellen müssen die Diagramme zunächst in einer Form vorliegen, die von allen verwendeten Bibliotheken verwendet werden können. Zunächst suchten wir nach einer eleganten Art um die Datein zu verwalten.</p>
 <p>Es gab die Möglichkeit die erzeugten Bild-Datein, die wir aus den Diagrammen erstellen konnten in temporären Byte Buffern zu speichern. Dies hätte es ermöglicht die Datein nur kurzfristig im Arbeitsspeicher abzulegen und dann wieder zu löschen. Allerdings waren wir uns hier nicht sicher, dass alle Bibliotheken, die wir verwenden werden mit diesem Datenformat umgehen konnten.</p>
 <p>Deswegen entschieden wir uns die Daten als png-Dateien in dem Projektordner abzulegen. Auch wenn die Bilder hier dauerhaft liegen werden sie für jeden Download neu erstellt um immer die aktuellsten Diagramme zu beinhalten.</p>
+<p>Beispiel für die Erzeugung eines png Bildes:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pg</span> <span class="o">=</span> <span class="n">Phishing_Graphs</span><span class="p">()</span> <span class="c1"># Aufrufen der Klasse Phishing Graphs</span>
+<span class="c1"># Erstellung des PNG eines Diagramms</span>
+<span class="n">pg</span><span class="o">.</span><span class="n">get_fail_bar</span><span class="p">(</span><span class="s1">&#39;Abteilung&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">write_image</span><span class="p">(</span><span class="s2">&quot;fail_bar_type_name.png&quot;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">900</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">800</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+</pre></div>
+</div>
 </div>
 <div class="section" id="diagramm-anpassungen">
 <h3>Diagramm Anpassungen<a class="headerlink" href="#diagramm-anpassungen" title="Permalink to this headline">¶</a></h3>
@@ -309,6 +344,65 @@
 </div>
 </div>
 </div>
+<div class="section" id="daten-in-excelform">
+<h2>Daten in Excelform<a class="headerlink" href="#daten-in-excelform" title="Permalink to this headline">¶</a></h2>
+<p>Wenn die Nutzer nur die Daten verwenden wollen können sie diese auf jeder Seite des Dashboards runterladen. Die Daten werden dann in einer Exceldatei bereitgestellt</p>
+<div class="section" id="excel-datei-mit-einem-tabellenblatt">
+<h3>Excel Datei mit einem Tabellenblatt<a class="headerlink" href="#excel-datei-mit-einem-tabellenblatt" title="Permalink to this headline">¶</a></h3>
+<p>Um die Datei zu erstellen werden zunächst die Daten aus den vorhandenen Dataframes überarbeitet. Hier werden Überschriften angepasst und die unbenutzte Spalten entfernt.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_excel_df</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">wc</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">res</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s1">&#39;size&#39;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">res</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s1">&#39;note&#39;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span>
+            <span class="n">columns</span><span class="o">=</span><span class="p">{</span>
+                <span class="s1">&#39;Password&#39;</span><span class="p">:</span> <span class="s1">&#39;Passwort&#39;</span><span class="p">,</span> 
+                <span class="s1">&#39;category&#39;</span><span class="p">:</span> <span class="s1">&#39;Kategorie&#39;</span><span class="p">,</span> 
+                <span class="s1">&#39;rank&#39;</span><span class="p">:</span> <span class="s1">&#39;Platz&#39;</span><span class="p">,</span> <span class="p">})</span>
+        <span class="k">return</span> <span class="n">res</span><span class="o">.</span><span class="n">to_excel</span>
+</pre></div>
+</div>
+<p>Am Ende wird die Funktion des Dataframes to Excel zurückgegeben, die dann an das HTML-Element im Code zurückgegben wird und ausgeführt wird sobald der Nutzer den Button drückt. Ebenfalls werden dann der Name der Datei und der Name des Tabellenblattes festgelegt wird.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@app</span><span class="o">.</span><span class="n">callback</span><span class="p">(</span>
+    <span class="n">Output</span><span class="p">(</span><span class="s2">&quot;download-password-excel&quot;</span><span class="p">,</span> <span class="s2">&quot;data&quot;</span><span class="p">),</span>
+    <span class="n">Input</span><span class="p">(</span><span class="s2">&quot;password_btn&quot;</span><span class="p">,</span> <span class="s2">&quot;n_clicks&quot;</span><span class="p">),</span>
+    <span class="n">prevent_initial_call</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="k">def</span> <span class="nf">download</span><span class="p">(</span><span class="n">n_clicks</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">dcc</span><span class="o">.</span><span class="n">send_data_frame</span><span class="p">(</span><span class="n">pp</span><span class="o">.</span><span class="n">get_excel_df</span><span class="p">(),</span> <span class="s2">&quot;Passwörter.xlsx&quot;</span><span class="p">,</span> <span class="n">sheet_name</span><span class="o">=</span><span class="s2">&quot;Passwörter&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id1">
+<h3>Excel Datei mit einem Tabellenblatt<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<p>Auf manchen Dashboard Seiten sind jedoch auch mehrere Datensätze hinterlegt. Um diese Daten trotzdem vorher alle in eine Exceldatei mit mehreren Tabellenblättern zu schreiben muss die Tabelle vorher mit einem Excelwriter geschrieben werden.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_excel</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="n">writer</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">ExcelWriter</span><span class="p">(</span><span class="s1">&#39;Phishing.xlsx&#39;</span><span class="p">,</span> <span class="n">engine</span><span class="o">=</span><span class="s2">&quot;xlsxwriter&quot;</span><span class="p">)</span> <span class="c1"># Name der Datei wird direkt am Anfang festgelegt</span>
+    <span class="n">copytoexcel</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pg</span><span class="o">.</span><span class="n">get_fail_df</span><span class="p">())</span>
+    <span class="n">copytoexcel</span><span class="o">.</span><span class="n">to_excel</span><span class="p">(</span><span class="n">writer</span><span class="p">,</span> <span class="n">sheet_name</span><span class="o">=</span><span class="s2">&quot;Fehlerquoten&quot;</span><span class="p">)</span> <span class="c1"># Ein Dataframe wird in ein Tabellenblatt der Excel Datei geschrieben</span>
+    <span class="n">copytoexcel</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pg</span><span class="o">.</span><span class="n">get_lia_df</span><span class="p">())</span>
+    <span class="n">copytoexcel</span><span class="o">.</span><span class="n">to_excel</span><span class="p">(</span><span class="n">writer</span><span class="p">,</span> <span class="n">sheet_name</span><span class="o">=</span><span class="s2">&quot;Phishing Absichten&quot;</span><span class="p">)</span>
+    <span class="n">writer</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Wenn der Nutzer nun die Datei anfordert wird die gespeicherte Excel Datei direkt an den Nutzer gesendet.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@app</span><span class="o">.</span><span class="n">callback</span><span class="p">(</span>
+    <span class="n">Output</span><span class="p">(</span><span class="s2">&quot;download-phishing-excel&quot;</span><span class="p">,</span> <span class="s2">&quot;data&quot;</span><span class="p">),</span>
+    <span class="n">Input</span><span class="p">(</span><span class="s2">&quot;phishing_btn&quot;</span><span class="p">,</span> <span class="s2">&quot;n_clicks&quot;</span><span class="p">),</span>
+    <span class="n">prevent_initial_call</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="k">def</span> <span class="nf">download</span><span class="p">(</span><span class="n">n_clicks</span><span class="p">):</span>
+    <span class="n">phishing</span><span class="o">.</span><span class="n">get_excel</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">dcc</span><span class="o">.</span><span class="n">send_file</span><span class="p">(</span><span class="s1">&#39;Phishing.xlsx&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="fazit-zu-excel">
+<h3>Fazit zu Excel<a class="headerlink" href="#fazit-zu-excel" title="Permalink to this headline">¶</a></h3>
+<p>Da sich Pandas Dataframes leicht in Excel Datein umwandeln lassen ist es sehr einfach gewesen die Daten dem Nuzter zur Verfügung zu stellen. Es mussten lediglich die Spaltennamen angepasst werden und in manchen Fällen die Datentypen so angepasst werden, dass Excel diese interpretieren konnte.</p>
+<p>Das Ziel den Nutzern die Daten so zur Verfügung zu stellen konnte sehr einfach und schnell umgesetzt werden.</p>
+</div>
+</div>
 <div class="section" id="powerpoint">
 <h2>Powerpoint<a class="headerlink" href="#powerpoint" title="Permalink to this headline">¶</a></h2>
 <p>Es ist ebenfalls möglich die Diagramme und Informationen als Powerpoint zu exportieren. Das Ziel der Powerpoint ist es dem Nutzer eine Möglichkeit zu bieten, die Diagramme besser zu interpretieren. Gegebenenfalls kann die Präsentation auch von Zuhörern genutzt werden um andere für Themen der Cyber Sicherheit zu sensibilisieren.</p>
@@ -328,7 +422,7 @@
 <div class="section" id="layout">
 <h3>Layout<a class="headerlink" href="#layout" title="Permalink to this headline">¶</a></h3>
 <p>Die erste Herausforderung, die sich uns stellte, war das Layouten der einzelnen Folien. Unsere Diagramme hatten alle unterschiedliche Formate. So waren die Diagramme der Kosten eher im Querformat und die Diagramme aus Phishing hatten eher ein Hochformat.</p>
-<p>Nachdem wir uns überlegt hatten, wie die einzelnen Folien ungefähr aussehen sollten ging es darum diese auch so mit python umzusetzen. Dazu hatten wir verschiedene Möglichkeiten. Zunächst haben wir versucht die Diagramme und Texte auf einer blanken Vorlagenfolie zu platzieren. Das stellte sich jedoch als sehr schwierig heraus, da man die Positionen auf der Folie mit Abständen zum Rand definiert. Für uns war es dann jedoch nicht möglich zu berechnen, wo der Text auf die Folie geschrieben werden sollte, denn wir hatten den Abstand zum Rand aber nicht die größe des Diagramms. Somit wurde es eher zu einem Try-and-Error-Spiel die Texte richtig zu platzieren, das jedes mal von neuem losging, wenn Texte oder Diagramme angepasst wurden. <strong>Das war also der falsche Weg.</strong></p>
+<p>Nachdem wir uns überlegt hatten, wie die einzelnen Folien ungefähr aussehen sollten ging es darum diese auch so mit python umzusetzen. Dazu hatten wir verschiedene Möglichkeiten. Zunächst haben wir versucht die Diagramme und Texte auf einer blanken Vorlagenfolie zu platzieren. Das stellte sich jedoch als sehr schwierig heraus, da man die Positionen auf der Folie mit Abständen zum Rand definiert. Für uns war es dann jedoch nicht möglich zu berechnen, wo der Text auf die Folie geschrieben werden sollte, denn wir hatten den Abstand zum Rand aber nicht die größe des Diagramms. Somit wurde es eher zu einem Trial-and-Error-Spiel die Texte richtig zu platzieren, das jedes mal von neuem losging, wenn Texte oder Diagramme angepasst wurden. <strong>Das war also der falsche Weg.</strong></p>
 <p>Deswegen fingen wir an mit Platzhaltern zu arbeiten. Wir haben also Masterfolien in unserem Template erstellt und die Bereiche an denen die Bilder eingefügt werden sollten entsprechend markiert. Später konnten wir dann in python auf die einzelnen PLatzhalter zugreifen und befüllen.</p>
 <p>Formatierungen von Texten und sonstige graphische Äunderungen haben wir ausschließlich in den Masterfolien von Powerpoint gemacht. Dies erschien am sinnvollsten und unkompliziertesten.</p>
 </div>
@@ -427,6 +521,15 @@
             </div>
         </a>
     </div>
+     <div id="next">
+        <a class="right-next" href="dashboard.html" title="next page">
+            <div class="prevnext-info">
+                <p class="prevnext-label">next</p>
+                <p class="prevnext-title">Dashboard</p>
+            </div>
+            <i class="prevnext-label fas fa-angle-right"></i>
+        </a>
+     </div>
 
 </div>
         
