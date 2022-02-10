@@ -164,6 +164,94 @@ fig.update_xaxes(showgrid=False, title_font_family="Arial", title_font_color=col
 
 Die Struktur haben wir so aufgebaut, dass wir für jeden Tab eine eigene Klasse erstellt haben. Jede Klasse bietet dabei eine get_layout() Funktion, die das Dash Layout zurückgibt. Durch das aufteilen konnte sowohl Hauptdatei deutlich übersichtlicher gestaltet werden und man wusste direkt, wo man suchen sollte, wenn ein Fehler auftritt. Wir haben uns auch dafür entschieden die einzelnen Diagramme für die Seiten ebenfalls in eigenen Klassen zu verwalten. Dadurch wurde die Logik von Diagramm erstellen und Dashboard sauber voneinander getrennt.
 
+### Beispiel für das Umsetzen eines Diagramms
+
+Im folgenden Beispiel wird erklärt, wie die Diagramme im Dashboard angezeigt werden.
+
+Das Layout wird zunächst in einer der Klassen für die Tabs festgelegt. Hier wird das Beispiel für die Arten von Hackerattacken dargestellt.
+
+```
+
+def get_layout(self):
+        
+    return html.Div(
+        id="attackVector-wrapper",
+        className="wrapper",
+        children=[
+            # Linke Seite des Dashboard
+            html.Div(
+                id="left-side",
+                children=[
+                    html.H3("Hackerarten und Angriffsziele"),
+                    html.Pre(id='click-data'),
+                    dcc.Graph(
+                        id='attack-treemap', 
+                        figure = self.atp.fig
+                        ),
+                ]),
+            
+            # Rechte Seite des Dashboards
+            html.Div(
+                id="right-side",
+                children=[
+                    html.H3("Informationen"),
+                    html.Div(
+                        id="information-wrapper", 
+                        children=[
+                            html.H4(id='name-attack',
+                                children=[
+                                    "Hinweis"
+                                ]
+                            ),
+                            html.Div(id='info-attack',
+                                children=[
+                                    html.P("Klicken Sie links auf die Bereiche zu denen Sie genauere Informationen haben möchten.")
+                                ]
+                            ),
+                        ]
+                    ),
+                ]
+            ),
+
+            # Footer mit Downloadbaren Inhalt
+            html.Div(
+                className="download-wrapper",
+                children=
+                [
+                    html.Button("Daten herunterladen", className="btn_csv", id="attack_vectors_btn"),
+                    dcc.Download(id="download-attack_vectors-excel"),
+                ]
+            )         
+        ]
+    )
+```
+
+Im Bereich **left-side** wird der Platzhalter eingefügt in dem später das Diagramm angezeigt werden soll. Das Diagramm wird durch die Funktion in der dashboard.py Datei erzeugt.
+
+```
+atp = Chart_AttackVectors
+
+
+@app.callback(
+    Output('attack-treemap', 'figure'),
+    Input('attack-treemap', 'clickData'))
+def display_click_data(clickData):
+    return atp.create_treemap()
+```
+
+Im Bereich **right-side** wird dann der Text für die jeweils angeklickte Hackermethode angezeigt.
+
+```
+dbav = AttackVectorsPage(app) 
+
+@app.callback(
+    Output('info-attack', 'children'),
+    Input('attack-treemap', 'clickData'))
+def display_attackVectors(clickData):
+    return html.P(dbav.get_information_attackVectors(clickData))
+```
+
+
 ### dashboard.py / Einstiegspunkt
 
 Der Einstiegspunkt der Appliktaion bietet die "dashboard.py" Datei. Hier wird die Dash-App erzeugt und mit dem grundlegendem Layout sowie allen Funktionen die im Dashboard gebraucht werden erzeugt. Im Layout legen wir zunächst nur das Aussehen des Headers fest.
@@ -437,5 +525,5 @@ Das besondere hierbei ist das Anzeigen der Informationen über die verschiedenen
 
 Eigentlich wollten wir die Informationen direkt im Diagramm anzeigen. Leider war das Problem, dass das Diagramm von plotly Express schon klickbar. Durch klicken wird eine kleine Animation ausgeführt, die in das Feld führt. Unsere Idee war die Information mittig im Diagramm anzuzeigen. Leider hätten wir dafür ein neues Diagramm erstellen müssen mit einer Annotation. Durch das ständige überschreiben der Treemap wurden zum einen die Animationen unterbrochen und wirkten dadurch komisch. Außerdem mussten wir das neue Diagramm so erstellen als hätte der Nutzer auf einen Wert geklickt. Das konnten wir zwar darstellen aber dann gab es keine Möglichkeit wieder zurück zu kommen.
 
-
+### data_breaches_attack_vectors.py / Hackermethoden
 

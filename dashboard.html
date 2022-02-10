@@ -233,6 +233,11 @@
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#beispiel-fur-das-umsetzen-eines-diagramms">
+     Beispiel für das Umsetzen eines Diagramms
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#dashboard-py-einstiegspunkt">
      dashboard.py / Einstiegspunkt
     </a>
@@ -256,6 +261,11 @@
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#data-breaches-attack-vectors-py-hackermethoden">
+     data_breaches_attack_vectors.py / Hackermethoden
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id1">
      data_breaches_attack_vectors.py / Hackermethoden
     </a>
    </li>
@@ -427,6 +437,87 @@
 <div class="section" id="ordnerstruktur-und-technischer-aufbau">
 <h2>Ordnerstruktur und Technischer Aufbau<a class="headerlink" href="#ordnerstruktur-und-technischer-aufbau" title="Permalink to this headline">¶</a></h2>
 <p>Die Struktur haben wir so aufgebaut, dass wir für jeden Tab eine eigene Klasse erstellt haben. Jede Klasse bietet dabei eine get_layout() Funktion, die das Dash Layout zurückgibt. Durch das aufteilen konnte sowohl Hauptdatei deutlich übersichtlicher gestaltet werden und man wusste direkt, wo man suchen sollte, wenn ein Fehler auftritt. Wir haben uns auch dafür entschieden die einzelnen Diagramme für die Seiten ebenfalls in eigenen Klassen zu verwalten. Dadurch wurde die Logik von Diagramm erstellen und Dashboard sauber voneinander getrennt.</p>
+<div class="section" id="beispiel-fur-das-umsetzen-eines-diagramms">
+<h3>Beispiel für das Umsetzen eines Diagramms<a class="headerlink" href="#beispiel-fur-das-umsetzen-eines-diagramms" title="Permalink to this headline">¶</a></h3>
+<p>Im folgenden Beispiel wird erklärt, wie die Diagramme im Dashboard angezeigt werden.</p>
+<p>Das Layout wird zunächst in einer der Klassen für die Tabs festgelegt. Hier wird das Beispiel für die Arten von Hackerattacken dargestellt.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>
+<span class="k">def</span> <span class="nf">get_layout</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        
+    <span class="k">return</span> <span class="n">html</span><span class="o">.</span><span class="n">Div</span><span class="p">(</span>
+        <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;attackVector-wrapper&quot;</span><span class="p">,</span>
+        <span class="n">className</span><span class="o">=</span><span class="s2">&quot;wrapper&quot;</span><span class="p">,</span>
+        <span class="n">children</span><span class="o">=</span><span class="p">[</span>
+            <span class="c1"># Linke Seite des Dashboard</span>
+            <span class="n">html</span><span class="o">.</span><span class="n">Div</span><span class="p">(</span>
+                <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;left-side&quot;</span><span class="p">,</span>
+                <span class="n">children</span><span class="o">=</span><span class="p">[</span>
+                    <span class="n">html</span><span class="o">.</span><span class="n">H3</span><span class="p">(</span><span class="s2">&quot;Hackerarten und Angriffsziele&quot;</span><span class="p">),</span>
+                    <span class="n">html</span><span class="o">.</span><span class="n">Pre</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="s1">&#39;click-data&#39;</span><span class="p">),</span>
+                    <span class="n">dcc</span><span class="o">.</span><span class="n">Graph</span><span class="p">(</span>
+                        <span class="nb">id</span><span class="o">=</span><span class="s1">&#39;attack-treemap&#39;</span><span class="p">,</span> 
+                        <span class="n">figure</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">atp</span><span class="o">.</span><span class="n">fig</span>
+                        <span class="p">),</span>
+                <span class="p">]),</span>
+            
+            <span class="c1"># Rechte Seite des Dashboards</span>
+            <span class="n">html</span><span class="o">.</span><span class="n">Div</span><span class="p">(</span>
+                <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;right-side&quot;</span><span class="p">,</span>
+                <span class="n">children</span><span class="o">=</span><span class="p">[</span>
+                    <span class="n">html</span><span class="o">.</span><span class="n">H3</span><span class="p">(</span><span class="s2">&quot;Informationen&quot;</span><span class="p">),</span>
+                    <span class="n">html</span><span class="o">.</span><span class="n">Div</span><span class="p">(</span>
+                        <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;information-wrapper&quot;</span><span class="p">,</span> 
+                        <span class="n">children</span><span class="o">=</span><span class="p">[</span>
+                            <span class="n">html</span><span class="o">.</span><span class="n">H4</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="s1">&#39;name-attack&#39;</span><span class="p">,</span>
+                                <span class="n">children</span><span class="o">=</span><span class="p">[</span>
+                                    <span class="s2">&quot;Hinweis&quot;</span>
+                                <span class="p">]</span>
+                            <span class="p">),</span>
+                            <span class="n">html</span><span class="o">.</span><span class="n">Div</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="s1">&#39;info-attack&#39;</span><span class="p">,</span>
+                                <span class="n">children</span><span class="o">=</span><span class="p">[</span>
+                                    <span class="n">html</span><span class="o">.</span><span class="n">P</span><span class="p">(</span><span class="s2">&quot;Klicken Sie links auf die Bereiche zu denen Sie genauere Informationen haben möchten.&quot;</span><span class="p">)</span>
+                                <span class="p">]</span>
+                            <span class="p">),</span>
+                        <span class="p">]</span>
+                    <span class="p">),</span>
+                <span class="p">]</span>
+            <span class="p">),</span>
+
+            <span class="c1"># Footer mit Downloadbaren Inhalt</span>
+            <span class="n">html</span><span class="o">.</span><span class="n">Div</span><span class="p">(</span>
+                <span class="n">className</span><span class="o">=</span><span class="s2">&quot;download-wrapper&quot;</span><span class="p">,</span>
+                <span class="n">children</span><span class="o">=</span>
+                <span class="p">[</span>
+                    <span class="n">html</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span><span class="s2">&quot;Daten herunterladen&quot;</span><span class="p">,</span> <span class="n">className</span><span class="o">=</span><span class="s2">&quot;btn_csv&quot;</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;attack_vectors_btn&quot;</span><span class="p">),</span>
+                    <span class="n">dcc</span><span class="o">.</span><span class="n">Download</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="s2">&quot;download-attack_vectors-excel&quot;</span><span class="p">),</span>
+                <span class="p">]</span>
+            <span class="p">)</span>         
+        <span class="p">]</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+<p>Im Bereich <strong>left-side</strong> wird der Platzhalter eingefügt in dem später das Diagramm angezeigt werden soll. Das Diagramm wird durch die Funktion in der <a class="reference external" href="http://dashboard.py">dashboard.py</a> Datei erzeugt.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">atp</span> <span class="o">=</span> <span class="n">Chart_AttackVectors</span>
+
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">callback</span><span class="p">(</span>
+    <span class="n">Output</span><span class="p">(</span><span class="s1">&#39;attack-treemap&#39;</span><span class="p">,</span> <span class="s1">&#39;figure&#39;</span><span class="p">),</span>
+    <span class="n">Input</span><span class="p">(</span><span class="s1">&#39;attack-treemap&#39;</span><span class="p">,</span> <span class="s1">&#39;clickData&#39;</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">display_click_data</span><span class="p">(</span><span class="n">clickData</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">atp</span><span class="o">.</span><span class="n">create_treemap</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Im Bereich <strong>right-side</strong> wird dann der Text für die jeweils angeklickte Hackermethode angezeigt.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dbav</span> <span class="o">=</span> <span class="n">AttackVectorsPage</span><span class="p">(</span><span class="n">app</span><span class="p">)</span> 
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">callback</span><span class="p">(</span>
+    <span class="n">Output</span><span class="p">(</span><span class="s1">&#39;info-attack&#39;</span><span class="p">,</span> <span class="s1">&#39;children&#39;</span><span class="p">),</span>
+    <span class="n">Input</span><span class="p">(</span><span class="s1">&#39;attack-treemap&#39;</span><span class="p">,</span> <span class="s1">&#39;clickData&#39;</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">display_attackVectors</span><span class="p">(</span><span class="n">clickData</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">html</span><span class="o">.</span><span class="n">P</span><span class="p">(</span><span class="n">dbav</span><span class="o">.</span><span class="n">get_information_attackVectors</span><span class="p">(</span><span class="n">clickData</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
 <div class="section" id="dashboard-py-einstiegspunkt">
 <h3><a class="reference external" href="http://dashboard.py">dashboard.py</a> / Einstiegspunkt<a class="headerlink" href="#dashboard-py-einstiegspunkt" title="Permalink to this headline">¶</a></h3>
 <p>Der Einstiegspunkt der Appliktaion bietet die “<a class="reference external" href="http://dashboard.py">dashboard.py</a>” Datei. Hier wird die Dash-App erzeugt und mit dem grundlegendem Layout sowie allen Funktionen die im Dashboard gebraucht werden erzeugt. Im Layout legen wir zunächst nur das Aussehen des Headers fest.</p>
@@ -690,6 +781,9 @@ Das Diagramm besteht dabei eigentlich aus vier Diagrammen:</p>
 <p>Das besondere hierbei ist das Anzeigen der Informationen über die verschiedenen Hackermethoden. Der Nutzer hat hier die Möglichkeit auf Felder zu klicken, über das eher nähere Informationen haben möchte. Im Dashboard werden diese Daten neben dem Diagramm angezeigt.</p>
 <p><strong>Schwierigkeit</strong></p>
 <p>Eigentlich wollten wir die Informationen direkt im Diagramm anzeigen. Leider war das Problem, dass das Diagramm von plotly Express schon klickbar. Durch klicken wird eine kleine Animation ausgeführt, die in das Feld führt. Unsere Idee war die Information mittig im Diagramm anzuzeigen. Leider hätten wir dafür ein neues Diagramm erstellen müssen mit einer Annotation. Durch das ständige überschreiben der Treemap wurden zum einen die Animationen unterbrochen und wirkten dadurch komisch. Außerdem mussten wir das neue Diagramm so erstellen als hätte der Nutzer auf einen Wert geklickt. Das konnten wir zwar darstellen aber dann gab es keine Möglichkeit wieder zurück zu kommen.</p>
+</div>
+<div class="section" id="id1">
+<h3>data_breaches_attack_vectors.py / Hackermethoden<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
 </div>
 </div>
 </div>
