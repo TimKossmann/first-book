@@ -10,6 +10,10 @@ Die Codebeispiele können dabei leicht abweichen um es für den Leser besser ver
 
 Das Dashboard besteht aus mehreren Tabs, die unterschiedliche Themen behandeln. Dabei gehen wir Thematisch vor. Zunächst kann man sich im Tab "Schaden durch Hacks" einen ersten Überblick verschaffen, was für Schäden Cyber Attacken im Allgemeinen nach sich ziehen. Um sich weiter zu informieren wird im Tab "Hackermethoden" genauer darauf eingegangen, wie Hacks durchgeführt werden und welche Arten am meisten verbreitet sind. Die zweit häufigsten Angriffe, mit der Schwachstelle Mensch sind Phishing Attacken. Deswegen kann sich der Nutzer im Tab "Phishing" über mögliche Absichten von solchen Mails informieren und auch schauen, welche Branchen und Abteilungen häufig betroffen sind. Im letzten Tab "Passwortsicherheit" wird, wie der Name schon sagt, dann noch auf die Passwortsicherheit ein. Hier kann der Nutzer Passörter testen und schauen, ob sich vielleicht eins seiner verwendeten Passwörter in der Wordcloud der meist verwendeten Passwörter wiederfindet.
 
+## Farbauswahl
+
+Wir haben uns für ein dunklen Hintergrund entschieden da dies oft angenehmer für den Nutzer ist. Die Daten haben wir in einem hellblauton dargestellt. Aktzente haben wir mit einem dunklen Lila gesetzt. Dadurch wollen wir die Aufmerksamkeit des Nutzers lenken. Es ist auffallend genug aber nicht so aggressiv wie ein rot. 
+
 ## Verwendete Technologien
 
 ### Applikation
@@ -163,6 +167,10 @@ fig.update_xaxes(showgrid=False, title_font_family="Arial", title_font_color=col
 ## Ordnerstruktur und Technischer Aufbau
 
 Die Struktur haben wir so aufgebaut, dass wir für jeden Tab eine eigene Klasse erstellt haben. Jede Klasse bietet dabei eine get_layout() Funktion, die das Dash Layout zurückgibt. Durch das aufteilen konnte sowohl Hauptdatei deutlich übersichtlicher gestaltet werden und man wusste direkt, wo man suchen sollte, wenn ein Fehler auftritt. Wir haben uns auch dafür entschieden die einzelnen Diagramme für die Seiten ebenfalls in eigenen Klassen zu verwalten. Dadurch wurde die Logik von Diagramm erstellen und Dashboard sauber voneinander getrennt.
+
+**Problem**
+
+Eigentlich wollten wir auch die Funktionen für die einzelnen Tabs in den Klassen definieren, wo wir auch das Layout festgelegt haben. Allerdings können Funktionen dort nicht an die Dashboard-App eingefügt werden. Deswegen mussten wir alle Funktionen in der Dashboard Datei erstellen.
 
 ### Beispiel für das Umsetzen eines Diagramms
 
@@ -338,6 +346,10 @@ def render_content(tab):
 ### data_breaches_cost.py / Schaden durch Hacks
 
 Hier wollen wir dem Nutzer klar machen, was für Schaden Cyber Attacken anrichten können. Der Anwender kann sehen, wie sich die Summe der einzelnen Jahre, sowie der Durchschnitt verhält. Ebenfalls wird dargestellt, was die größten Schäden durch Datenlecks bei einzelnen Firmen in einem Jahr waren. Dem Nutzer wird außerdem ein Slider angeboten, mit dem er verschiedene Jahre auswählen kann.
+
+**Was nicht ging**
+
+Eigentlich wollten wir den Titel der y-Achse linksbündig machen. Allerdings bietet plotly express keine Möglichkeit die Titel in ihrer Position anzupassen. Ein Versuch den wir unternommen haben, war eine Annotation einzufügen den wir als Titel verwenden können. Das Problem war, dass die Annotation nur im Prozentverhältnis vom gesamten Diagramm oder der Zeichenfläche dargestellt werden kann. Wenn das Diagramm nun in einem anderen Format benötigt wird, verschiebt es diese wieder und müsste eigentlich angepasst werden.
 
 #### Summierte Schäden
 
@@ -632,16 +644,15 @@ return self.word_cloud.to_image() # Wordcloud wird als Bild zurückgegeben
 ``` 
 
 
-Neben der Wordcloud können Nutzer ebenfalls ihr Passwort auf die Stärke testen lassen. Die Stärke des Passworts wird so berechnet, dass alle Möglichkeiten genommen werden und dann durch die Anzahl der Möglichkeiten geteilt, die ein Computer testen kann.
+Neben der Wordcloud können Nutzer ebenfalls ihr Passwort auf die Stärke testen lassen. Die Stärke des Passworts wird so berechnet, dass alle Möglichkeiten an Zeichen genommen werden und mit der Länge des Passworts potentiert werden. Es wird davon ausgegangen, dass ein Computer 1.000.000.000 Variationen austesten kann.
+
 ```
 # Formel für die Berechnung
 
-Möglichkeiten * Passwortlänge / VersucheProSekunde
+Möglichkeiten ** Passwortlänge / VersucheProSekunde
 
 Möglichkeiten = (Zahlen ? + 10) + (Kleinbuchstaben ? + 26) + (Großbuchstaben ? + 26) + (Sonderzeichen ? + 32)
 VersucheProSekunde = 1.000.000.000
 ```
 
 
-
-## Probleme
