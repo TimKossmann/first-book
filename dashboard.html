@@ -247,7 +247,17 @@
        Summierte Schäden
       </a>
      </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#vorfalle-fur-das-ausgewahlte-jahr">
+       Vorfälle für das ausgewählte Jahr
+      </a>
+     </li>
     </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#data-breaches-attack-vectors-py-hackermethoden">
+     data_breaches_attack_vectors.py / Hackermethoden
+    </a>
    </li>
   </ul>
  </li>
@@ -264,6 +274,11 @@
                 
   <div class="tex2jax_ignore mathjax_ignore section" id="dashboard">
 <h1>Dashboard<a class="headerlink" href="#dashboard" title="Permalink to this headline">¶</a></h1>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Hier wird erläutert, wie das Dashboard aufgebaut ist, welche Technologien wir verwendet haben und wie wir das Ganze technisch umgesetzt haben.</p>
+<p>Die Codebeispiele können dabei leicht abweichen um es für den Leser besser verständlich zu machen.</p>
+</div>
 <div class="section" id="genereller-aufbau">
 <h2>Genereller Aufbau<a class="headerlink" href="#genereller-aufbau" title="Permalink to this headline">¶</a></h2>
 <p>Das Dashboard besteht aus mehreren Tabs, die unterschiedliche Themen behandeln. Dabei gehen wir Thematisch vor. Zunächst kann man sich im Tab “Schaden durch Hacks” einen ersten Überblick verschaffen, was für Schäden Cyber Attacken im Allgemeinen nach sich ziehen. Um sich weiter zu informieren wird im Tab “Hackermethoden” genauer darauf eingegangen, wie Hacks durchgeführt werden und welche Arten am meisten verbreitet sind. Die zweit häufigsten Angriffe, mit der Schwachstelle Mensch sind Phishing Attacken. Deswegen kann sich der Nutzer im Tab “Phishing” über mögliche Absichten von solchen Mails informieren und auch schauen, welche Branchen und Abteilungen häufig betroffen sind. Im letzten Tab “Passwortsicherheit” wird, wie der Name schon sagt, dann noch auf die Passwortsicherheit ein. Hier kann der Nutzer Passörter testen und schauen, ob sich vielleicht eins seiner verwendeten Passwörter in der Wordcloud der meist verwendeten Passwörter wiederfindet.</p>
@@ -407,7 +422,6 @@
         <span class="p">)</span>
 </pre></div>
 </div>
-<p>Auf die einzelnen Diagramme werden wir aber später auch noch genauer eingehen</p>
 </div>
 </div>
 <div class="section" id="ordnerstruktur-und-technischer-aufbau">
@@ -500,7 +514,9 @@
 <h4>Summierte Schäden<a class="headerlink" href="#summierte-schaden" title="Permalink to this headline">¶</a></h4>
 <p>Es werden für die einzelnen Jahre die Schäden summiert und dargestellt. Um dem Nutzer ein Gefühl zu geben, ob es eher zunimmt oder abnimmt haben wir ebenfalls den Durchschnitt berechnet.
 Das Diagramm besteht dabei eigentlich aus vier Diagrammen:</p>
-<p><strong>Summe der Einzelnen Jahre</strong></p>
+<ul class="simple">
+<li><p><strong>Summe der Einzelnen Jahre</strong></p></li>
+</ul>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sum_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;year&#39;</span><span class="p">])[</span><span class="s1">&#39;records lost&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">/</span><span class="mi">1000</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
 
 <span class="n">df_fig1</span> <span class="o">=</span> <span class="p">(</span><span class="n">sum_df</span><span class="p">)</span>
@@ -576,7 +592,9 @@ Das Diagramm besteht dabei eigentlich aus vier Diagrammen:</p>
 
 </pre></div>
 </div>
-<p><strong>Durchschnitt über die Jahre</strong></p>
+<ul class="simple">
+<li><p><strong>Durchschnitt über die Jahre</strong></p></li>
+</ul>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">avg_fig</span> <span class="o">=</span> <span class="n">px</span><span class="o">.</span><span class="n">line</span><span class="p">(</span><span class="n">avg_year</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s2">&quot;year&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;avg&quot;</span><span class="p">,</span> 
                         <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Testtitle&#39;</span><span class="p">,</span> <span class="n">markers</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">line_shape</span><span class="o">=</span><span class="s1">&#39;spline&#39;</span><span class="p">)</span>
 <span class="n">avg_fig</span><span class="o">.</span><span class="n">update_traces</span><span class="p">(</span>
@@ -588,9 +606,10 @@ Das Diagramm besteht dabei eigentlich aus vier Diagrammen:</p>
 <span class="p">)</span>
 </pre></div>
 </div>
-<p><strong>Punktmarker welches Jahr markiert ist für die Jahressumme (Scatterplot)</strong>
-<strong>&amp;</strong>
-<strong>Punktmarker welches Jahr markiert ist für den Durchschnitt (Scatterplot)</strong></p>
+<ul class="simple">
+<li><p><strong>Punktmarker welches Jahr markiert ist für die Jahressumme (Scatterplot)</strong></p></li>
+<li><p><strong>Punktmarker welches Jahr markiert ist für den Durchschnitt (Scatterplot)</strong></p></li>
+</ul>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">avg_point</span> <span class="o">=</span> <span class="n">avg_year</span><span class="p">[</span><span class="s1">&#39;avg&#39;</span><span class="p">][</span><span class="n">avg_year</span><span class="p">[</span><span class="s2">&quot;year&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">year</span><span class="p">)]</span>
         <span class="n">sum_for_year</span> <span class="o">=</span> <span class="n">sum_df</span><span class="p">[</span><span class="n">sum_df</span><span class="p">[</span><span class="s2">&quot;year&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">year</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;records lost&#39;</span><span class="p">]</span>
         <span class="n">switcher</span> <span class="o">=</span> <span class="mi">1</span>
@@ -635,6 +654,42 @@ Das Diagramm besteht dabei eigentlich aus vier Diagrammen:</p>
 </pre></div>
 </div>
 </div>
+<div class="section" id="vorfalle-fur-das-ausgewahlte-jahr">
+<h4>Vorfälle für das ausgewählte Jahr<a class="headerlink" href="#vorfalle-fur-das-ausgewahlte-jahr" title="Permalink to this headline">¶</a></h4>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Der genaue Code für die Diagrammerstellung wird nicht dargestellt, da das Prinzip bereits im Abschnitt Summierte Schäden erläutert wurde.</p>
+</div>
+<p>Um das Diagramm gut darstellen zu können war es notwendig das Dataframe erst einmal zu bearbeiten (siehe Datenhandling). Dadurch war es möglich die Kreise weiter voneinander zu trennen und nur die Namen der Firmen zu nennen, die die größten Schäden erlitten.</p>
+</div>
+</div>
+<div class="section" id="data-breaches-attack-vectors-py-hackermethoden">
+<h3>data_breaches_attack_vectors.py / Hackermethoden<a class="headerlink" href="#data-breaches-attack-vectors-py-hackermethoden" title="Permalink to this headline">¶</a></h3>
+<p>Um die Hackermethoden gut darzustellen wollten wir die Daten als Treemap darstellen. Dabei stellt die größe der Felder dar, wie häufig das jeweilige Angriffsziel zu einem Datenleck führt.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="bp">self</span><span class="o">.</span><span class="n">fig</span> <span class="o">=</span> <span class="n">px</span><span class="o">.</span><span class="n">treemap</span><span class="p">(</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="p">,</span>  
+    <span class="n">path</span><span class="o">=</span><span class="p">[</span><span class="n">px</span><span class="o">.</span><span class="n">Constant</span><span class="p">(</span><span class="s2">&quot;Angriffsziele&quot;</span><span class="p">),</span> <span class="s1">&#39;Fehler&#39;</span><span class="p">,</span><span class="s1">&#39;Angriffspunkt&#39;</span><span class="p">],</span> 
+    <span class="n">values</span><span class="o">=</span><span class="s1">&#39;Häufigkeit von Data Breaches&#39;</span><span class="p">,</span>
+    <span class="n">labels</span><span class="o">=</span> <span class="s1">&#39;Angriffspunkt&#39;</span><span class="p">,</span>
+    <span class="n">color_continuous_scale</span><span class="o">=</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;rgb(7, 37, 66)&#39;</span><span class="p">],</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="s1">&#39;rgb(77, 219, 227)&#39;</span><span class="p">]],</span> 
+    <span class="n">maxdepth</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> 
+    <span class="n">color</span><span class="o">=</span><span class="s1">&#39;Häufigkeit von Data Breaches&#39;</span><span class="p">,</span> 
+    <span class="n">hover_data</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Angriffspunkt&#39;</span><span class="p">],</span>
+<span class="p">)</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">fig</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span><span class="n">clickmode</span><span class="o">=</span><span class="s1">&#39;event+select&#39;</span><span class="p">)</span> <span class="c1"># Um es möglich zu machen, dass der Nutzer auf Felder klicken kann </span>
+<span class="bp">self</span><span class="o">.</span><span class="n">fig</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span>
+    <span class="c1">#uniformtext=dict(minsize=12, mode=&#39;show&#39;),</span>
+    <span class="n">margin</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">t</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">l</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">r</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mi">25</span><span class="p">),</span> 
+    <span class="n">plot_bgcolor</span><span class="o">=</span> <span class="s1">&#39;rgba(0, 0, 0, 0)&#39;</span><span class="p">,</span>
+    <span class="n">paper_bgcolor</span><span class="o">=</span> <span class="s1">&#39;rgba(0, 0, 0, 0)&#39;</span><span class="p">,</span>
+    <span class="n">showlegend</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">fig</span><span class="o">.</span><span class="n">update_coloraxes</span><span class="p">(</span><span class="n">showscale</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Das besondere hierbei ist das Anzeigen der Informationen über die verschiedenen Hackermethoden. Der Nutzer hat hier die Möglichkeit auf Felder zu klicken, über das eher nähere Informationen haben möchte. Im Dashboard werden diese Daten neben dem Diagramm angezeigt.</p>
+<p><strong>Schwierigkeit</strong>
+Eigentlich wollten wir die Informationen direkt im Diagramm anzeigen. Leider war das Problem, dass das Diagramm von plotly Express schon klickbar. Durch klicken wird eine kleine Animation ausgeführt, die in das Feld führt. Unsere Idee war die Information mittig im Diagramm anzuzeigen. Leider hätten wir dafür ein neues Diagramm erstellen müssen mit einer Annotation. Durch das ständige überschreiben der Treemap wurden zum einen die Animationen unterbrochen und wirkten dadurch komisch. Außerdem mussten wir das neue Diagramm so erstellen als hätte der Nutzer auf einen Wert geklickt. Das konnten wir zwar darstellen aber dann gab es keine Möglichkeit wieder zurück zu kommen.</p>
 </div>
 </div>
 </div>

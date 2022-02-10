@@ -1,5 +1,11 @@
 # Dashboard
 
+:::{note}
+Hier wird erläutert, wie das Dashboard aufgebaut ist, welche Technologien wir verwendet haben und wie wir das Ganze technisch umgesetzt haben. 
+
+Die Codebeispiele können dabei leicht abweichen um es für den Leser besser verständlich zu machen.
+:::
+
 ## Genereller Aufbau
 
 Das Dashboard besteht aus mehreren Tabs, die unterschiedliche Themen behandeln. Dabei gehen wir Thematisch vor. Zunächst kann man sich im Tab "Schaden durch Hacks" einen ersten Überblick verschaffen, was für Schäden Cyber Attacken im Allgemeinen nach sich ziehen. Um sich weiter zu informieren wird im Tab "Hackermethoden" genauer darauf eingegangen, wie Hacks durchgeführt werden und welche Arten am meisten verbreitet sind. Die zweit häufigsten Angriffe, mit der Schwachstelle Mensch sind Phishing Attacken. Deswegen kann sich der Nutzer im Tab "Phishing" über mögliche Absichten von solchen Mails informieren und auch schauen, welche Branchen und Abteilungen häufig betroffen sind. Im letzten Tab "Passwortsicherheit" wird, wie der Name schon sagt, dann noch auf die Passwortsicherheit ein. Hier kann der Nutzer Passörter testen und schauen, ob sich vielleicht eins seiner verwendeten Passwörter in der Wordcloud der meist verwendeten Passwörter wiederfindet.
@@ -153,13 +159,10 @@ fig.update_xaxes(showgrid=False, title_font_family="Arial", title_font_color=col
         )
 ```
 
-Auf die einzelnen Diagramme werden wir aber später auch noch genauer eingehen
-
 
 ## Ordnerstruktur und Technischer Aufbau
 
 Die Struktur haben wir so aufgebaut, dass wir für jeden Tab eine eigene Klasse erstellt haben. Jede Klasse bietet dabei eine get_layout() Funktion, die das Dash Layout zurückgibt. Durch das aufteilen konnte sowohl Hauptdatei deutlich übersichtlicher gestaltet werden und man wusste direkt, wo man suchen sollte, wenn ein Fehler auftritt. Wir haben uns auch dafür entschieden die einzelnen Diagramme für die Seiten ebenfalls in eigenen Klassen zu verwalten. Dadurch wurde die Logik von Diagramm erstellen und Dashboard sauber voneinander getrennt.
-
 
 ### dashboard.py / Einstiegspunkt
 
@@ -253,7 +256,7 @@ Hier wollen wir dem Nutzer klar machen, was für Schaden Cyber Attacken anrichte
 Es werden für die einzelnen Jahre die Schäden summiert und dargestellt. Um dem Nutzer ein Gefühl zu geben, ob es eher zunimmt oder abnimmt haben wir ebenfalls den Durchschnitt berechnet.
 Das Diagramm besteht dabei eigentlich aus vier Diagrammen: 
 
-**Summe der Einzelnen Jahre**
+- **Summe der Einzelnen Jahre**
 ```
 sum_df = pd.DataFrame(self.df.groupby(by=['year'])['records lost'].sum()/1000).reset_index()
 
@@ -329,7 +332,7 @@ df_fig1 = (sum_df)
         )
 
 ```
-**Durchschnitt über die Jahre**
+- **Durchschnitt über die Jahre**
 ```
 avg_fig = px.line(avg_year, x="year", y="avg", 
                         title='Testtitle', markers=False, line_shape='spline')
@@ -342,9 +345,8 @@ avg_fig.update_traces(
 )
 ```
 
-**Punktmarker welches Jahr markiert ist für die Jahressumme (Scatterplot)**
-**&**
-**Punktmarker welches Jahr markiert ist für den Durchschnitt (Scatterplot)**
+- **Punktmarker welches Jahr markiert ist für die Jahressumme (Scatterplot)**
+- **Punktmarker welches Jahr markiert ist für den Durchschnitt (Scatterplot)**
 ```
 avg_point = avg_year['avg'][avg_year["year"].index(year)]
         sum_for_year = sum_df[sum_df["year"] == year].iloc[0]['records lost']
@@ -391,4 +393,48 @@ fig.add_annotation(
     
 )
 ```
+
+#### Vorfälle für das ausgewählte Jahr
+
+:::{note}
+
+Der genaue Code für die Diagrammerstellung wird nicht dargestellt, da das Prinzip bereits im Abschnitt Summierte Schäden erläutert wurde.  
+
+:::
+
+Um das Diagramm gut darstellen zu können war es notwendig das Dataframe erst einmal zu bearbeiten (siehe Datenhandling). Dadurch war es möglich die Kreise weiter voneinander zu trennen und nur die Namen der Firmen zu nennen, die die größten Schäden erlitten.
+
+
+### data_breaches_attack_vectors.py / Hackermethoden
+
+Um die Hackermethoden gut darzustellen wollten wir die Daten als Treemap darstellen. Dabei stellt die größe der Felder dar, wie häufig das jeweilige Angriffsziel zu einem Datenleck führt. 
+
+```
+self.fig = px.treemap(
+    self.df,  
+    path=[px.Constant("Angriffsziele"), 'Fehler','Angriffspunkt'], 
+    values='Häufigkeit von Data Breaches',
+    labels= 'Angriffspunkt',
+    color_continuous_scale=[[0, 'rgb(7, 37, 66)'], [1.0, 'rgb(77, 219, 227)']], 
+    maxdepth = 2, 
+    color='Häufigkeit von Data Breaches', 
+    hover_data=['Angriffspunkt'],
+)
+self.fig.update_layout(clickmode='event+select') # Um es möglich zu machen, dass der Nutzer auf Felder klicken kann 
+self.fig.update_layout(
+    #uniformtext=dict(minsize=12, mode='show'),
+    margin = dict(t=50, l=25, r=25, b=25), 
+    plot_bgcolor= 'rgba(0, 0, 0, 0)',
+    paper_bgcolor= 'rgba(0, 0, 0, 0)',
+    showlegend = False,
+    )
+self.fig.update_coloraxes(showscale=False)
+```
+
+Das besondere hierbei ist das Anzeigen der Informationen über die verschiedenen Hackermethoden. Der Nutzer hat hier die Möglichkeit auf Felder zu klicken, über das eher nähere Informationen haben möchte. Im Dashboard werden diese Daten neben dem Diagramm angezeigt. 
+
+**Schwierigkeit**
+Eigentlich wollten wir die Informationen direkt im Diagramm anzeigen. Leider war das Problem, dass das Diagramm von plotly Express schon klickbar. Durch klicken wird eine kleine Animation ausgeführt, die in das Feld führt. Unsere Idee war die Information mittig im Diagramm anzuzeigen. Leider hätten wir dafür ein neues Diagramm erstellen müssen mit einer Annotation. Durch das ständige überschreiben der Treemap wurden zum einen die Animationen unterbrochen und wirkten dadurch komisch. Außerdem mussten wir das neue Diagramm so erstellen als hätte der Nutzer auf einen Wert geklickt. Das konnten wir zwar darstellen aber dann gab es keine Möglichkeit wieder zurück zu kommen.
+
+
 
